@@ -2,7 +2,7 @@ import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import { faIR } from "@mui/material/locale";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { RouterProvider } from "react-router-dom";
 import { prefixer } from "stylis";
 import rtlPlugin from "stylis-plugin-rtl";
