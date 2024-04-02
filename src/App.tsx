@@ -25,17 +25,10 @@ function App() {
           direction: "rtl",
           palette: {
             primary: {
-              main: "#407BFF",
-              light: "#E9F3FF",
-              dark: "#193E92",
+              main: "#20AD95",
             },
             secondary: {
-              main: "#999",
-              light: "#F8FAFC",
-            },
-            success: {
-              main: "#3CD4A0",
-              contrastText: "#fff",
+              main: "#a3f5ea",
             },
             mode,
           },
