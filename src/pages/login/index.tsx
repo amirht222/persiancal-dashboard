@@ -5,6 +5,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import {
   Box,
   Button,
+  CircularProgress,
   InputAdornment,
   TextField,
   Typography,
@@ -15,14 +16,21 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import LoginImage from "../../assets/images/login-image.svg";
+import { useMutation } from "@tanstack/react-query";
+import instance from "../../utils/axiosInstance";
+import useSnackbar from "../../hooks/useSnackbar";
 
 const LoginPage = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
+  const { showSnack } = useSnackbar();
+
   type formData = z.infer<typeof schema>;
   const schema = z.object({
     username: z.string().min(1, "نام کاربری الزامی میباشد"),
     password: z.string().min(1, "رمز عبور الزامی میباشد"),
   });
+
   const {
     formState: { errors },
     register,
@@ -32,18 +40,40 @@ const LoginPage = () => {
     mode: "onSubmit",
   });
 
-  const navigate = useNavigate();
-  const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
-
-  const loginHandler = async (data: formData) => {
-    try {
-      console.log(data);
-      // await login({ body: { ...data } });
+  const mutation = useMutation({
+    mutationFn: (data: formData) => {
+      return instance.post(
+        "auth/login",
+        {
+          username: data.username,
+          password: data.password,
+        },
+        {
+          headers: {
+            Authorization: undefined,
+          },
+        }
+      );
+    },
+    onSuccess(res) {
+      localStorage.setItem("accessToken", res.data.data);
       navigate("/", { replace: true });
-    } catch (error: any) {
+    },
+    onError(error) {
       console.log(error);
-    }
+      showSnack({
+        type: "error",
+        message: error.message || "خطایی رخ داده!",
+      });
+    },
+  });
+
+  const [isShowPassword, setIsShowPassword] = useState(false);
+
+  const loginHandler = (data: formData) => {
+    mutation.mutate({ ...data });
   };
+
   return (
     <Box
       component={"main"}
@@ -147,14 +177,14 @@ const LoginPage = () => {
                 variant="contained"
                 size="large"
                 sx={{ color: "white", mt: 10, borderRadius: "30px", px: 15 }}
-                startIcon={<LoginIcon />}
-                // startIcon={
-                //   isLoading ? (
-                //     <CircularProgress size={20} color="secondary" />
-                //   ) : (
-                //     <LoginIcon />
-                //   )
-                // }
+                disabled={mutation.isPending}
+                startIcon={
+                  mutation.isPending ? (
+                    <CircularProgress size={20} color="primary" />
+                  ) : (
+                    <LoginIcon />
+                  )
+                }
               >
                 ورود
               </Button>
