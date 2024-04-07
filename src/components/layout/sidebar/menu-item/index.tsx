@@ -28,7 +28,7 @@ const MenuItem = (props: MenuItemProps) => {
             borderLeftStyle: "solid",
             backgroundColor: `${
               pathname === props.path
-                ? "#648EEBCC"
+                ? "rgb(255,255,255,0.3)"
                 : theme?.palette?.primary?.main
             }`,
             borderLeftColor: `${
@@ -40,7 +40,9 @@ const MenuItem = (props: MenuItemProps) => {
             justifyContent: props.isMenuOpen ? "initial" : "center",
             px: 1.5,
             "&:hover": {
-              ...(pathname === props.path && { backgroundColor: "#648EEBCC" }),
+              ...(pathname === props.path && {
+                backgroundColor: "rgb(255,255,255,0.3)",
+              }),
             },
           }}
           onClick={() => navigate(props.path)}
