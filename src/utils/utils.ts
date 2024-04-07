@@ -1,7 +1,7 @@
 export const mapUserStatus = (status: number) => {
   switch (status) {
     case 1:
-      return "فعال";
+      return "در انتظار";
     case 2:
       return "فعال";
     case 3:
