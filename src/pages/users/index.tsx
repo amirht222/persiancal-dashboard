@@ -4,12 +4,13 @@ import { Box, Button, Stack, useTheme } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import IPaginate from "../../components/UI/pagination";
-import AddNewUserDialog from "../../components/users/add-user";
-import UsersList from "../../components/users/users-list";
+import AddNewUserDialog from "../../components/users/add";
+import UsersList from "../../components/users/list";
 import useConfirm from "../../hooks/useConfirm";
 import useSnackbar from "../../hooks/useSnackbar";
 import instance from "../../utils/axiosInstance";
 import { objectCleaner } from "../../utils/utils";
+import FilterUsersDialog from "../../components/users/filter";
 
 type UsersFilters = {
   username: string;
@@ -29,7 +30,7 @@ const UsersPage = () => {
   const { showSnack } = useSnackbar();
   const queryClient = useQueryClient();
 
-  const [filters, setFilters] = useState<any>({
+  const [filters, setFilters] = useState({
     username: null,
     name: null,
     email: null,
@@ -75,7 +76,7 @@ const UsersPage = () => {
   });
 
   const [isAddUserDialogOpen, setIsAddUserDialogOpen] = useState(false);
-  // const [isFilterUserDialogOpen, setIsFilterUserDialogOpen] = useState(false);
+  const [isFilterUserDialogOpen, setIsFilterUserDialogOpen] = useState(false);
 
   const deleteUserHandler = (username: string) => {
     openConfirm({
@@ -112,7 +113,9 @@ const UsersPage = () => {
             size="large"
             type="button"
             sx={{ minWidth: "auto", color: "white" }}
-            onClick={() => {}}
+            onClick={() => {
+              setIsFilterUserDialogOpen(true);
+            }}
           >
             <FilterListIcon fontSize="medium" />
           </Button>
@@ -141,7 +144,6 @@ const UsersPage = () => {
         isError={isError}
         isLoading={isPending}
         onDeleteUser={deleteUserHandler}
-        // onResetPassword={(id) => setSelectedResetPasswordUser(id)}
       />
 
       {usersData && usersData.data?.data?.length > 0 && (
@@ -164,18 +166,13 @@ const UsersPage = () => {
         open={isAddUserDialogOpen}
         handleClose={() => setIsAddUserDialogOpen(false)}
       />
-      {/* <FilterUserDialog
+      <FilterUsersDialog
         open={isFilterUserDialogOpen}
         handleClose={() => setIsFilterUserDialogOpen(false)}
-        filterHandler={(values) =>
+        filterHandler={(values: any) =>
           setFilters((prevFilters) => ({ ...prevFilters, ...values }))
         }
-      /> */}
-      {/* <ResetPasswordDialog
-        open={!!selectedResetPasswordUser}
-        handleClose={() => setSelectedResetPasswordUser(null)}
-        handleAction={resetPasswordHandler}
-      /> */}
+      />
     </>
   );
 };
