@@ -10,6 +10,14 @@ export const mapUserStatus = (status: number) => {
       return "حذف شده";
   }
 };
+export const mapLabStatus = (status: number) => {
+  switch (status) {
+    case 1:
+      return "فعال";
+    case 2:
+      return "حذف شده";
+  }
+};
 export const mapUserRole = (role: number) => {
   switch (role) {
     case 1:
