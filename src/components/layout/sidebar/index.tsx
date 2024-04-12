@@ -11,6 +11,7 @@ import {
   useTheme,
 } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
+import ChatIcon from "@mui/icons-material/Chat";
 
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
@@ -90,6 +91,12 @@ const Sidebar = (props: { open: boolean; toggleDrawer: () => void }) => {
           path={"/labs"}
           title={"آزمایشگاه ها"}
           icon={<ScienceIcon />}
+          isMenuOpen={props.open}
+        />
+        <MenuItem
+          path={"/feedbacks"}
+          title={"نظرات و پیشنهادات"}
+          icon={<ChatIcon />}
           isMenuOpen={props.open}
         />
       </List>
