@@ -26,6 +26,16 @@ export const mapUserRole = (role: number) => {
       return "ادمین";
   }
 };
+export const mapCourseStatus = (status: number) => {
+  switch (status) {
+    case 1:
+      return "فعال";
+    case 2:
+      return "غیر فعال";
+    case 3:
+      return "حذف شده";
+  }
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const convertEnglishToPersianDigits = (value: any) => {
