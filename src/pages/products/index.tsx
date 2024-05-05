@@ -12,6 +12,8 @@ import AddNewCourseDialog from "../../components/courses/add";
 import FilterCoursesDialog from "../../components/courses/filter";
 import CoursesList from "../../components/courses/list";
 import ProductList from "../../components/products/list";
+import AddProductDialog from "../../components/products/add/AddProductDialog";
+import FilterProductsDialog from "../../components/products/filter";
 
 // type CoursesFilters = {
 //   username: string;
@@ -165,7 +167,7 @@ const ProductsPage = () => {
           />
         </Stack>
       )}
-      {/* <AddNewProductDialog
+      <AddProductDialog
         open={isAddProductDialogOpen}
         handleClose={() => setIsAddProductDialogOpen(false)}
       />
@@ -175,7 +177,7 @@ const ProductsPage = () => {
         filterHandler={(values: any) =>
           setFilters((prevFilters) => ({ ...prevFilters, ...values }))
         }
-      /> */}
+      />
     </>
   );
 };
