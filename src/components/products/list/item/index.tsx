@@ -9,6 +9,11 @@ import {
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { useTheme } from "@mui/material";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import useConfirm from "../../../../hooks/useConfirm";
+import useSnackbar from "../../../../hooks/useSnackbar";
+import instance from "../../../../utils/axiosInstance";
 
 type ProductItemProps = {
   id: string;
@@ -18,6 +23,44 @@ type ProductItemProps = {
 };
 
 const ProductItem = (props: ProductItemProps) => {
+  const { openConfirm, closeConfirm } = useConfirm();
+  const { showSnack } = useSnackbar();
+  const queryClient = useQueryClient();
+
+  const { mutate: deleteMutate } = useMutation({
+    mutationFn: () => {
+      return instance.delete(`product/${props.id}`);
+    },
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      showSnack({
+        type: "success",
+        message: "تجهیز با موفقیت حذف شد",
+      });
+    },
+    onError(error) {
+      showSnack({
+        type: "error",
+        message:
+          error.message || "حذف تجهیز با خطا مواجه شد. لطفا مجددا تلاش کنید",
+      });
+    },
+  });
+
+  const deleteProductHandler = () => {
+    openConfirm({
+      title: "حذف تجهیز",
+      description: "آیا از حذف تجهیز اطمینان دارید؟",
+      isOpen: true,
+      cancelBtnLabel: "لغو",
+      confirmBtnLabel: "حذف",
+      onCancel: () => closeConfirm(),
+      onConfirm: async () => {
+        closeConfirm();
+        deleteMutate();
+      },
+    });
+  };
   return (
     <>
       <Box
@@ -56,7 +99,7 @@ const ProductItem = (props: ProductItemProps) => {
               </IconButton>
             </Tooltip>
             <Tooltip title="حذف" arrow={true} placement="bottom">
-              <IconButton onClick={() => {}}>
+              <IconButton onClick={deleteProductHandler}>
                 <DeleteIcon fontSize="small" />
               </IconButton>
             </Tooltip>
