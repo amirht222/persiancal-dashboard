@@ -25,7 +25,7 @@ import { useState } from "react";
 const AddProductDialog = (props: DialogProps) => {
   const { showSnack } = useSnackbar();
 
-  const [files, setFiles] = useState<FileList | undefined>();
+  const [files, setFiles] = useState<any>();
   const addProductSchema = z.object({
     title: z.string().min(1, "نام محصول الزامیست"),
     price: z.string().min(1, "نام محصول الزامیست"),
@@ -50,8 +50,10 @@ const AddProductDialog = (props: DialogProps) => {
       fd.append("price", data.price);
       fd.append("description", data.description);
       fd.append("title", data.title);
-      fd.append("files", files);
-
+      for(let i = 0; i < files.length; i++){
+        fd.append(`files${i+1}`, files[i]);
+      }
+            
       return instance.post("product", fd, {
         headers: {
           "Content-Type": "multipart/form-data",
