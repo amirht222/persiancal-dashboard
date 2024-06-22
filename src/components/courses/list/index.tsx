@@ -22,6 +22,7 @@ const CoursesList = (props: Props) => {
       id: res.id,
       title: res.title,
       provider: res.provider,
+      duration: res.duration + " ساعت" || 0,
       description: res.description,
       courseStatus: mapCourseStatus(res.courseStatus),
     }));
@@ -43,6 +44,7 @@ const CoursesList = (props: Props) => {
           { field: "title", title: "نام دوره" },
           { field: "provider", title: "نام شرکت" },
           { field: "courseStatus", title: "وضعیت دوره" },
+          { field: "duration", title: "مدت زمان" },
           { field: "description", title: "توضیحات" },
         ]}
         tableData={transformTableData(props.data?.data?.data)}
