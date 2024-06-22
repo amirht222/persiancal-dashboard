@@ -32,6 +32,7 @@ const AddNewCourseDialog = (props: DialogProps) => {
     title: z.string().min(1, "نام دوره الزامیست"),
     provider: z.string().min(1, "نام شرکت الزامیست"),
     description: z.string().min(1, "متن توضیحات دوره الزامیست"),
+    duration: z.string().min(1, "مدت زمان دوره الزامیست"),
   });
   type addCourseInputs = z.infer<typeof addCourseSchema>;
 
@@ -107,6 +108,16 @@ const AddNewCourseDialog = (props: DialogProps) => {
               error={!!errors["title"]}
               helperText={errors["title"] ? errors["title"].message : ""}
               {...register("title")}
+            />
+            <TextField
+              type="text"
+              margin="normal"
+              fullWidth
+              id="course-duration"
+              label={"مدت زمان دوره به ساعت"}
+              error={!!errors["duration"]}
+              helperText={errors["duration"] ? errors["duration"].message : ""}
+              {...register("duration")}
             />
             <FormControl fullWidth sx={{ mt: 2 }}>
               <InputLabel>شرکت</InputLabel>
