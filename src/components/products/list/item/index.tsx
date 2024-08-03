@@ -9,7 +9,6 @@ import {
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { useTheme } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useConfirm from "../../../../hooks/useConfirm";
 import useSnackbar from "../../../../hooks/useSnackbar";
@@ -18,8 +17,7 @@ import instance from "../../../../utils/axiosInstance";
 type ProductItemProps = {
   id: string;
   title: string;
-  price: string;
-  image: string;
+  images: any[];
 };
 
 const ProductItem = (props: ProductItemProps) => {
@@ -75,7 +73,7 @@ const ProductItem = (props: ProductItemProps) => {
           <Box display={"flex"} justifyContent={"center"}>
             <Avatar
               alt="Plugin Logo"
-              src={props.image}
+              src={`http://localhost:3500/${props.images[0]?.imageUrl}`}
               sx={{
                 boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.25)",
                 borderRadius: "8px",
@@ -90,7 +88,7 @@ const ProductItem = (props: ProductItemProps) => {
             {props.title}
           </Typography>
           <Typography textAlign={"center"} component="p" fontSize={14}>
-            قیمت: {props.price}
+            قیمت: تماس بگیرید
           </Typography>
           <Stack direction="row" justifyContent={"end"}>
             <Tooltip title="تغییر" arrow={true} placement="bottom">
