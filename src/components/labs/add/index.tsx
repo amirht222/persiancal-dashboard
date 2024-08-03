@@ -20,10 +20,12 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import useSnackbar from "../../../hooks/useSnackbar";
 import instance from "../../../utils/axiosInstance";
+import { useState } from "react";
 
 const AddNewLabDialog = (props: DialogProps) => {
   const { showSnack } = useSnackbar();
 
+  const [files, setFiles] = useState<any>();
   const addLabSchema = z.object({
     name: z.string().min(1, "نام آزمایشگاه الزامیست"),
     description: z.string().min(1, "متن توضیحات الزامیست"),
@@ -43,8 +45,17 @@ const AddNewLabDialog = (props: DialogProps) => {
 
   const mutation = useMutation({
     mutationFn: (data: addLabInputs) => {
-      return instance.post("lab", {
-        ...data,
+      const fd = new FormData();
+      fd.append("name", data.name);
+      fd.append("description", data.description);
+      for (let i = 0; i < files.length; i++) {
+        fd.append(`files${i + 1}`, files[i]);
+      }
+
+      return instance.post("lab", fd, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
     },
     onSuccess() {
@@ -88,6 +99,13 @@ const AddNewLabDialog = (props: DialogProps) => {
           </Box>
         </DialogTitle>
         <DialogContent aria-label="dialog-description">
+          <input
+            multiple
+            type="file"
+            onChange={(e) => {
+              setFiles(e.target.files);
+            }}
+          />
           <Box
             component="form"
             onSubmit={handleSubmit(onSubmitHandler)}
