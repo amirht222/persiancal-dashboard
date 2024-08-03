@@ -3,6 +3,7 @@ import { Suspense, lazy } from "react";
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import RootLayout from "../pages/root-layout";
 import NotFound from "../components/not-found";
+import RequireAuth from "../components/wrappers/RequireAuth";
 
 const Login = lazy(() => import("../pages/login"));
 const Users = lazy(() => import("../pages/users"));
@@ -22,7 +23,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <RootLayout />,
+    element: (
+      <RequireAuth>
+        <RootLayout />
+      </RequireAuth>
+    ),
     errorElement: <NotFound />,
     children: [
       {
