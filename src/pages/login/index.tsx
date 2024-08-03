@@ -19,6 +19,7 @@ import LoginImage from "../../assets/images/login-image.svg";
 import { useMutation } from "@tanstack/react-query";
 import instance from "../../utils/axiosInstance";
 import useSnackbar from "../../hooks/useSnackbar";
+import CryptoJS from 'crypto-js';
 
 const LoginPage = () => {
   const theme = useTheme();
@@ -42,11 +43,12 @@ const LoginPage = () => {
 
   const mutation = useMutation({
     mutationFn: (data: formData) => {
+      const hashedPassword = CryptoJS.SHA256(data.password).toString();
       return instance.post(
         "auth/login",
         {
           username: data.username,
-          password: data.password,
+          password: hashedPassword,
         },
         {
           headers: {
