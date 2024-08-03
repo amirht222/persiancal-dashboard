@@ -57,6 +57,7 @@ const LoginPage = () => {
     },
     onSuccess(res) {
       localStorage.setItem("accessToken", res.data.data);
+      localStorage.setItem("role", res.data.role);
       navigate("/", { replace: true });
     },
     onError(error) {
