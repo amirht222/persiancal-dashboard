@@ -35,7 +35,7 @@ const ProductList = (props: Props) => {
             icon={<ErrorIcon />}
             variant="filled"
           >
-            <Typography>دوره ای یافت نشد</Typography>
+            <Typography>محصولی یافت نشد</Typography>
           </Alert>
         </Grid>
       </Grid>
@@ -47,12 +47,11 @@ const ProductList = (props: Props) => {
         {props.data &&
           props.data?.data?.data?.length > 0 &&
           props.data?.data?.data?.map((product: any) => (
-            <Grid item xl={2} lg={3} md={4} sm={6} xs={12} key={product.id}>
+            <Grid item lg={3} md={4} sm={6} xs={12} key={product.id}>
               <ProductItem
                 id={product.id}
                 title={product.title}
-                price={product.price}
-                image={product.image}
+                images={product.images}
               />
             </Grid>
           ))}
