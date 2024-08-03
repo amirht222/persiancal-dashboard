@@ -28,7 +28,6 @@ const AddProductDialog = (props: DialogProps) => {
   const [files, setFiles] = useState<any>();
   const addProductSchema = z.object({
     title: z.string().min(1, "نام محصول الزامیست"),
-    price: z.string().min(1, "نام محصول الزامیست"),
     description: z.string().min(1, "متن توضیحات الزامیست"),
   });
   type addProductInputs = z.infer<typeof addProductSchema>;
@@ -47,13 +46,12 @@ const AddProductDialog = (props: DialogProps) => {
   const mutation = useMutation({
     mutationFn: (data: addProductInputs) => {
       const fd = new FormData();
-      fd.append("price", data.price);
       fd.append("description", data.description);
       fd.append("title", data.title);
-      for(let i = 0; i < files.length; i++){
-        fd.append(`files${i+1}`, files[i]);
+      for (let i = 0; i < files.length; i++) {
+        fd.append(`files${i + 1}`, files[i]);
       }
-            
+
       return instance.post("product", fd, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -122,16 +120,6 @@ const AddProductDialog = (props: DialogProps) => {
               error={!!errors["title"]}
               helperText={errors["title"] ? errors["title"].message : ""}
               {...register("title")}
-            />
-            <TextField
-              type="text"
-              margin="normal"
-              fullWidth
-              id="product-price"
-              label={"قیمت"}
-              error={!!errors["price"]}
-              helperText={errors["price"] ? errors["price"].message : ""}
-              {...register("price")}
             />
             <TextField
               type="text"
