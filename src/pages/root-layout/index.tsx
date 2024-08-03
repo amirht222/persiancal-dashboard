@@ -1,22 +1,13 @@
 import { Box, Toolbar, useTheme } from "@mui/material";
-import { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Outlet } from "react-router-dom";
 import Header from "../../components/layout/header";
 import Sidebar from "../../components/layout/sidebar";
 
 const RootLayout = () => {
-  const navigate = useNavigate();
   const theme = useTheme();
 
   const [open, setOpen] = useState(true);
-
-  useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-
-    if (!accessToken) {
-      navigate("/login");
-    }
-  }, [navigate]);
 
   return (
     <Box sx={{ display: "flex" }}>
