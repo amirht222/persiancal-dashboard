@@ -73,7 +73,11 @@ const ProductItem = (props: ProductItemProps) => {
           <Box display={"flex"} justifyContent={"center"}>
             <Avatar
               alt="Plugin Logo"
-              src={`http://localhost:3500/${props.images[0]?.imageUrl}`}
+              src={
+                props.images
+                  ? `http://localhost:3500/${props.images[0].imageUrl}`
+                  : undefined
+              }
               sx={{
                 boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.25)",
                 borderRadius: "8px",
