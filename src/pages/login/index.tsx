@@ -19,7 +19,7 @@ import LoginImage from "../../assets/images/login-image.svg";
 import { useMutation } from "@tanstack/react-query";
 import instance from "../../utils/axiosInstance";
 import useSnackbar from "../../hooks/useSnackbar";
-import CryptoJS from 'crypto-js';
+import CryptoJS from "crypto-js";
 
 const LoginPage = () => {
   const theme = useTheme();
