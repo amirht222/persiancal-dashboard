@@ -21,6 +21,8 @@ type ProductItemProps = {
 };
 
 const ProductItem = (props: ProductItemProps) => {
+  console.log(props);
+
   const { openConfirm, closeConfirm } = useConfirm();
   const { showSnack } = useSnackbar();
   const queryClient = useQueryClient();
@@ -75,7 +77,7 @@ const ProductItem = (props: ProductItemProps) => {
               alt="Plugin Logo"
               src={
                 props.images
-                  ? `http://localhost:3500/${props.images[0].imageUrl}`
+                  ? `http://localhost:3500/${props.images[0]?.imageUrl}`
                   : undefined
               }
               sx={{
