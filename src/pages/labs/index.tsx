@@ -12,12 +12,12 @@ import useSnackbar from "../../hooks/useSnackbar";
 import instance from "../../utils/axiosInstance";
 import { objectCleaner } from "../../utils/utils";
 
-type LabsFilters = {
-  name: string;
-  labStatus: number;
-  currentPage: number;
-  itemPerPage: number;
-};
+// type LabsFilters = {
+//   name: string;
+//   labStatus: number;
+//   currentPage: number;
+//   itemPerPage: number;
+// };
 
 const LabsPage = () => {
   const theme = useTheme();

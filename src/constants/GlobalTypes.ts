@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AlertColor } from "@mui/material/Alert";
-import { AxiosPromise } from "axios";
 
 export interface IDialogState {
   mode: "NEW" | "EDIT" | "VIEW" | "UPLOAD" | null;

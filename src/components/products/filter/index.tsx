@@ -6,12 +6,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import { DialogProps } from "../../../constants/GlobalTypes";
 

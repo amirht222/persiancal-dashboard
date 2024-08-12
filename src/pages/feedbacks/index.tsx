@@ -8,14 +8,14 @@ import { objectCleaner } from "../../utils/utils";
 import FeedbacksList from "../../components/feedbacks/list";
 import FilterFeedbacksDialog from "../../components/feedbacks/filter";
 
-type FeedbacksFilters = {
-  senderName: string;
-  companyName: string;
-  email: string;
-  phoneNumber: string;
-  currentPage: number;
-  itemPerPage: number;
-};
+// type FeedbacksFilters = {
+//   senderName: string;
+//   companyName: string;
+//   email: string;
+//   phoneNumber: string;
+//   currentPage: number;
+//   itemPerPage: number;
+// };
 
 const FeedbacksPage = () => {
   const theme = useTheme();

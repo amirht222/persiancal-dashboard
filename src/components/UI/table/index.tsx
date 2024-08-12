@@ -195,7 +195,7 @@ export default function ITable(props: ITableProps) {
               </TableRow>
             )}
             {!props.isError &&
-              props.tableData?.map((row, index) => (
+              props.tableData?.map((row) => (
                 // index is not good for key, my option is uuid
                 <React.Fragment key={row.id}>
                   <TableRow

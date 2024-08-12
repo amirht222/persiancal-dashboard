@@ -12,17 +12,17 @@ import instance from "../../utils/axiosInstance";
 import { objectCleaner } from "../../utils/utils";
 import FilterUsersDialog from "../../components/users/filter";
 
-type UsersFilters = {
-  username: string;
-  name: string;
-  email: string;
-  password: string;
-  role: number;
-  userStatus: number;
-  address: string;
-  currentPage: number;
-  itemPerPage: number;
-};
+// type UsersFilters = {
+//   username: string;
+//   name: string;
+//   email: string;
+//   password: string;
+//   role: number;
+//   userStatus: number;
+//   address: string;
+//   currentPage: number;
+//   itemPerPage: number;
+// };
 
 const UsersPage = () => {
   const theme = useTheme();
