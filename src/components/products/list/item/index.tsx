@@ -13,6 +13,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useConfirm from "../../../../hooks/useConfirm";
 import useSnackbar from "../../../../hooks/useSnackbar";
 import instance from "../../../../utils/axiosInstance";
+import { BASE_URL } from "../../../../constants";
 
 type ProductItemProps = {
   id: string;
@@ -77,7 +78,7 @@ const ProductItem = (props: ProductItemProps) => {
               alt="Plugin Logo"
               src={
                 props.images
-                  ? `http://localhost:3500/${props.images[0]?.imageUrl}`
+                  ? `${BASE_URL}/${props.images[0]?.imageUrl}`
                   : undefined
               }
               sx={{
