@@ -19,6 +19,7 @@ type ProductItemProps = {
   id: string;
   title: string;
   images: any[];
+  provider: string;
 };
 
 const ProductItem = (props: ProductItemProps) => {

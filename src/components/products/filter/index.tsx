@@ -6,8 +6,12 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import { DialogProps } from "../../../constants/GlobalTypes";
 
@@ -23,7 +27,7 @@ interface ProductFilterDialogProps extends DialogProps {
 const FilterProductsDialog = (props: ProductFilterDialogProps) => {
   const filterProductSchema = z.object({
     title: z.string(),
-    price: z.string(),
+    provider: z.string(),
   });
   type filterProduct = z.infer<typeof filterProductSchema>;
   const { register, handleSubmit, reset } = useForm<filterProduct>({
@@ -69,14 +73,17 @@ const FilterProductsDialog = (props: ProductFilterDialogProps) => {
               label={"نام محصول"}
               {...register("title")}
             />
-            <TextField
-              type="text"
-              margin="normal"
-              fullWidth
-              id="product-price"
-              label={"قیمت"}
-              {...register("price")}
-            />
+            <FormControl fullWidth sx={{ mt: 2 }}>
+              <InputLabel>شرکت</InputLabel>
+              <Select
+                defaultValue={""}
+                label={"شرکت"}
+                {...register("provider")}
+              >
+                <MenuItem value={"persia"}>پرشیا</MenuItem>
+                <MenuItem value={"datis"}>داتیس</MenuItem>
+              </Select>
+            </FormControl>
 
             {/* <FormControl fullWidth sx={{ mt: 2 }}>
               <InputLabel>وضعیت</InputLabel>

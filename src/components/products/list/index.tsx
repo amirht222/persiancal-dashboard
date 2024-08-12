@@ -52,6 +52,7 @@ const ProductList = (props: Props) => {
                 id={product.id}
                 title={product.title}
                 images={product.productImages || undefined}
+                provider={product.provider}
               />
             </Grid>
           ))}

@@ -8,6 +8,10 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -29,6 +33,7 @@ const AddProductDialog = (props: DialogProps) => {
   const addProductSchema = z.object({
     title: z.string().min(1, "نام محصول الزامیست"),
     description: z.string().min(1, "متن توضیحات الزامیست"),
+    provider: z.string().min(1, "نام شرکت الزامیست"),
   });
   type addProductInputs = z.infer<typeof addProductSchema>;
 
@@ -135,6 +140,17 @@ const AddProductDialog = (props: DialogProps) => {
               }
               {...register("description")}
             />
+            <FormControl fullWidth sx={{ mt: 2 }}>
+              <InputLabel>شرکت</InputLabel>
+              <Select
+                defaultValue={""}
+                label={"شرکت"}
+                {...register("provider")}
+              >
+                <MenuItem value={"persia"}>پرشیا آزما</MenuItem>
+                <MenuItem value={"datis"}>داتیس</MenuItem>
+              </Select>
+            </FormControl>
 
             <DialogActions sx={{ justifyContent: "center", pt: 3, gap: 1 }}>
               <Button

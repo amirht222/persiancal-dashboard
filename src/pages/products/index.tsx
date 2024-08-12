@@ -28,6 +28,7 @@ const ProductsPage = () => {
   const [filters, setFilters] = useState({
     title: null,
     productStatus: null,
+    provider: null,
     currentPage: 1,
     itemPerPage: 9,
   });
