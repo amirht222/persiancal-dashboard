@@ -13,7 +13,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useConfirm from "../../../../hooks/useConfirm";
 import useSnackbar from "../../../../hooks/useSnackbar";
 import instance from "../../../../utils/axiosInstance";
-import { BASE_URL } from "../../../../constants";
+const base_url = import.meta.env.VITE_BASE_URL;
 
 type ProductItemProps = {
   id: string;
@@ -79,7 +79,7 @@ const ProductItem = (props: ProductItemProps) => {
               alt="Plugin Logo"
               src={
                 props.images
-                  ? `${BASE_URL}/${props.images[0]?.imageUrl}`
+                  ? `${base_url}/${props.images[0]?.imageUrl}`
                   : undefined
               }
               sx={{
