@@ -53,6 +53,7 @@ const AddProductDialog = (props: DialogProps) => {
       const fd = new FormData();
       fd.append("description", data.description);
       fd.append("title", data.title);
+      fd.append("provider", data.provider);
       for (let i = 0; i < files.length; i++) {
         fd.append(`files${i + 1}`, files[i]);
       }
