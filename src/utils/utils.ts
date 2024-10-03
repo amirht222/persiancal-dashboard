@@ -36,6 +36,32 @@ export const mapCourseStatus = (status: number) => {
       return "حذف شده";
   }
 };
+export const mapCertificationStatus = (status: number) => {
+  switch (status) {
+    case 1:
+      return "فعال";
+    case 2:
+      return "حذف شده";
+  }
+};
+export const mapArticleStatus = (status: number) => {
+  switch (status) {
+    case 1:
+      return "فعال";
+    case 2:
+      return "غیرفعال";
+    case 3:
+      return "حذف شده";
+  }
+};
+export const providerMapper = (provider: string) => {
+  switch (provider) {
+    case "persia":
+      return "پرشیا آزما";
+    case "datis":
+      return "داتیس";
+  }
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const convertEnglishToPersianDigits = (value: any) => {
