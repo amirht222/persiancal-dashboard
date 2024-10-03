@@ -54,7 +54,6 @@ const Header = (props: { open: boolean; toggleDrawer: () => void }) => {
   };
 
   const logoutHandler = () => {
-    console.log("logout");
     localStorage.clear();
     navigate("/login");
 

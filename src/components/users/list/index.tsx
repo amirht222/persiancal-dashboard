@@ -25,7 +25,7 @@ const UsersList = (props: Props) => {
       userStatus: mapUserStatus(res.userStatus),
       role: mapUserRole(res.role),
       name: res.name,
-      address: res.address,
+      address: res.address || "---",
     }));
   };
 
