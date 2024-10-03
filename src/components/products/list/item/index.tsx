@@ -20,10 +20,10 @@ type ProductItemProps = {
   title: string;
   images: any[];
   provider: string;
+  productStatus: number;
 };
 
 const ProductItem = (props: ProductItemProps) => {
-  console.log(props);
 
   const { openConfirm, closeConfirm } = useConfirm();
   const { showSnack } = useSnackbar();
@@ -97,6 +97,9 @@ const ProductItem = (props: ProductItemProps) => {
           </Typography>
           <Typography textAlign={"center"} component="p" fontSize={14}>
             قیمت: تماس بگیرید
+          </Typography>
+          <Typography textAlign={"center"} component="p" fontSize={14}>
+            وضعیت: {props.productStatus}
           </Typography>
           <Stack direction="row" justifyContent={"end"}>
             <Tooltip title="تغییر" arrow={true} placement="bottom">
