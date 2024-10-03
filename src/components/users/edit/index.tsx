@@ -8,6 +8,12 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
   TextField,
   Typography,
 } from "@mui/material";
@@ -20,21 +26,20 @@ import { z } from "zod";
 import useSnackbar from "../../../hooks/useSnackbar";
 import instance from "../../../utils/axiosInstance";
 import CheckIcon from "@mui/icons-material/Check";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface Props extends DialogProps {
   data: any;
 }
 
 const EditUserDialog = (props: Props) => {
-  console.log(props);
-
   const { showSnack } = useSnackbar();
 
   const editUserSchema = z.object({
     username: z.string().min(1, "نام کاربری الزامیست"),
     name: z.string().min(1, "نام الزامیست"),
     email: z.string().min(1, "ایمیل الزامیست"),
-    // password: z.string().min(1, "رمز عبور الزامیست"),
+    password: z.string(),
     address: z
       .string()
       .min(1, "آدرس الزامیست")
@@ -54,7 +59,7 @@ const EditUserDialog = (props: Props) => {
       username: props.data.username,
       name: props.data.name,
       email: props.data.email,
-      //   password: "",
+      password: "",
       address: props.data.address,
     },
   });
@@ -64,6 +69,9 @@ const EditUserDialog = (props: Props) => {
     mutationFn: (data: editUserInputs) => {
       return instance.put("user", {
         ...data,
+        password: data.password
+          ? CryptoJS.SHA256(data.password).toString()
+          : null,
       });
     },
     onSuccess() {
@@ -115,6 +123,30 @@ const EditUserDialog = (props: Props) => {
             <Box
               sx={{
                 display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Typography>فایل های مربوط به کاربر</Typography>
+              <Button>افزودن فایل</Button>
+            </Box>
+            <List>
+              {props.data.userFiles.map((file) => (
+                <ListItem
+                  secondaryAction={
+                    <IconButton color="error" edge="end" aria-label="delete">
+                      <DeleteIcon />
+                    </IconButton>
+                  }
+                  disablePadding
+                >
+                  <ListItemText primary={file.userFileUrl} />
+                </ListItem>
+              ))}
+            </List>
+            <Box
+              sx={{
+                display: "flex",
                 justifyContent: "center",
                 gap: "20px",
               }}
@@ -154,7 +186,7 @@ const EditUserDialog = (props: Props) => {
                 />
               </Box>
               <Box sx={{ flexBasis: "50%" }}>
-                {/* <TextField
+                <TextField
                   type="text"
                   margin="normal"
                   fullWidth
@@ -165,7 +197,7 @@ const EditUserDialog = (props: Props) => {
                     errors["password"] ? errors["password"].message : ""
                   }
                   {...register("password")}
-                /> */}
+                />
                 <TextField
                   type="text"
                   margin="normal"
