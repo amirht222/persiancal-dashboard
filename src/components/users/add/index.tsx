@@ -20,9 +20,11 @@ import { z } from "zod";
 import useSnackbar from "../../../hooks/useSnackbar";
 import instance from "../../../utils/axiosInstance";
 import CheckIcon from "@mui/icons-material/Check";
+import { useState } from "react";
 
 const AddNewUserDialog = (props: DialogProps) => {
   const { showSnack } = useSnackbar();
+  const [files, setFiles] = useState<any>();
 
   const addUserSchema = z.object({
     username: z.string().min(1, "نام کاربری الزامیست"),
@@ -49,8 +51,20 @@ const AddNewUserDialog = (props: DialogProps) => {
 
   const mutation = useMutation({
     mutationFn: (data: addUserInputs) => {
-      return instance.post("user", {
-        ...data,
+      const fd = new FormData();
+      fd.append("username", data.username);
+      fd.append("password", data.password);
+      fd.append("name", data.name);
+      fd.append("email", data.email);
+      fd.append("address", data.address);
+      for (let i = 0; i < files.length; i++) {
+        fd.append(`files${i + 1}`, files[i]);
+      }
+
+      return instance.post("user", fd, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
     },
     onSuccess() {
@@ -99,6 +113,14 @@ const AddNewUserDialog = (props: DialogProps) => {
             onSubmit={handleSubmit(onSubmitHandler)}
             noValidate
           >
+            <Typography>فایل های مربوط به کاربر</Typography>
+            <input
+              multiple
+              type="file"
+              onChange={(e) => {
+                setFiles(e.target.files);
+              }}
+            />
             <Box
               sx={{
                 display: "flex",
