@@ -6,4 +6,5 @@ export interface User {
   password: string;
   role?: number;
   userStatus?: number;
+  userFileUrl?: string;
 }
