@@ -12,6 +12,8 @@ import {
 } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import ChatIcon from "@mui/icons-material/Chat";
+import FeedIcon from "@mui/icons-material/Feed";
+import VerifiedIcon from "@mui/icons-material/Verified";
 
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
@@ -97,6 +99,18 @@ const Sidebar = (props: { open: boolean; toggleDrawer: () => void }) => {
           path={"/feedbacks"}
           title={"نظرات و پیشنهادات"}
           icon={<ChatIcon />}
+          isMenuOpen={props.open}
+        />
+        <MenuItem
+          path={"/articles"}
+          title={"مقالات"}
+          icon={<FeedIcon />}
+          isMenuOpen={props.open}
+        />
+        <MenuItem
+          path={"/certificates"}
+          title={"تاییدیه ها"}
+          icon={<VerifiedIcon />}
           isMenuOpen={props.open}
         />
       </List>
