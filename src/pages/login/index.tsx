@@ -58,12 +58,18 @@ const LoginPage = () => {
       );
     },
     onSuccess(res) {
+      if (res.data.role === 1) {
+        showSnack({
+          type: "error",
+          message: "عدم دسترسی!",
+        });
+        return;
+      }
       localStorage.setItem("accessToken", res.data.data);
       localStorage.setItem("role", res.data.role);
       navigate("/", { replace: true });
     },
     onError(error) {
-      console.log(error);
       showSnack({
         type: "error",
         message: error.message || "خطایی رخ داده!",
