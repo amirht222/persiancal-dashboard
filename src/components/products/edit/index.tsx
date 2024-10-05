@@ -67,6 +67,7 @@ const EditProductDialog = (props: Props) => {
     mutationFn: (data: editProductInputs) => {
       return instance.put("product", {
         ...data,
+        id: props.data.id,
       });
     },
     onSuccess() {
