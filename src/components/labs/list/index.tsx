@@ -4,6 +4,8 @@ import { useState } from "react";
 import { mapLabStatus } from "../../../utils/utils";
 import ITable from "../../UI/table";
 import EditLabDialog from "../edit";
+import DescriptionIcon from "@mui/icons-material/Description";
+import { Dialog, DialogContent, Tooltip } from "@mui/material";
 
 interface Props {
   data: any;
@@ -15,13 +17,16 @@ interface Props {
 const LabsList = (props: Props) => {
   const [isEditLabDialogOpen, setIsEditLabDialogOpen] = useState(false);
   const [selectedLab, setSelectedLab] = useState<null | object>(null);
+  const [showDescription, setShowDescription] = useState(false);
 
   const transformTableData = (response: any) => {
     if (!response) return;
     return response.map((res: any) => ({
       id: res.id,
       name: res.name,
-      description: res.description,
+      // description: (
+      //   <div dangerouslySetInnerHTML={{ __html: res.description }} />
+      // ),
       labStatus: mapLabStatus(res.labStatus),
     }));
   };
@@ -38,7 +43,7 @@ const LabsList = (props: Props) => {
         emptyTableMessage={"آزمایشگاه یافت نشد"}
         tableColumns={[
           { field: "name", title: "نام آزمایشگاه" },
-          { field: "description", title: "متن توضیحات" },
+          // { field: "description", title: "متن توضیحات" },
           { field: "labStatus", title: "وضعیت" },
         ]}
         tableData={transformTableData(props.data?.data?.data)}
@@ -47,11 +52,33 @@ const LabsList = (props: Props) => {
         tableLabel="labs"
         actions={[
           {
-            icon: <EditIcon fontSize="small" />,
+            icon: (
+              <Tooltip title="مشاهده توضیحات">
+                <DescriptionIcon fontSize="small" />
+              </Tooltip>
+            ),
+            handler: (id: string) => {
+              const foundLab = props.data?.data?.data?.find(
+                (lab: any) => lab.id === id
+              );
+              setSelectedLab(foundLab);
+              setShowDescription(true);
+            },
+          },
+          {
+            icon: (
+              <Tooltip title="ویرایش">
+                <EditIcon fontSize="small" />
+              </Tooltip>
+            ),
             handler: editLabHandler,
           },
           {
-            icon: <DeleteIcon fontSize="small" />,
+            icon: (
+              <Tooltip title="حذف">
+                <DeleteIcon fontSize="small" />
+              </Tooltip>
+            ),
             handler: props.onDeleteLab,
           },
         ]}
@@ -65,6 +92,20 @@ const LabsList = (props: Props) => {
             setSelectedLab(null);
           }}
         />
+      )}
+      {showDescription && (
+        <Dialog
+          open={showDescription}
+          onClose={() => {
+            setShowDescription(false);
+          }}
+        >
+          <DialogContent>
+            <div
+              dangerouslySetInnerHTML={{ __html: selectedLab?.description }}
+            />
+          </DialogContent>
+        </Dialog>
       )}
     </>
   );
