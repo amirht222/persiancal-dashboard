@@ -27,9 +27,15 @@ instance.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response.status === 401) {
-      // localStorage.clear();
-      // window.location.pathname = "/login";
+    // Exclude the 'auth/login' request from triggering the redirect
+    const originalRequest = error.config;
+
+    if (
+      (error.response.status === 401 || error.response.status === 403) &&
+      originalRequest.url !== "auth/login"
+    ) {
+      localStorage.clear();
+      window.location.pathname = "/login";
     }
     return Promise.reject(error);
   }
