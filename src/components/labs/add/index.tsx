@@ -1,5 +1,7 @@
 import ClearIcon from "@mui/icons-material/Clear";
 import CloseIcon from "@mui/icons-material/Close";
+import ReactQuill from "react-quill"; // Import Quill
+import "react-quill/dist/quill.snow.css"; // Import Quill styles
 import {
   Box,
   Button,
@@ -24,11 +26,11 @@ import { useState } from "react";
 
 const AddNewLabDialog = (props: DialogProps) => {
   const { showSnack } = useSnackbar();
+  const [description, setDescription] = useState("");
 
   const [files, setFiles] = useState<any>();
   const addLabSchema = z.object({
     name: z.string().min(1, "نام آزمایشگاه الزامیست"),
-    description: z.string().min(1, "متن توضیحات الزامیست"),
   });
   type addLabInputs = z.infer<typeof addLabSchema>;
 
@@ -47,9 +49,11 @@ const AddNewLabDialog = (props: DialogProps) => {
     mutationFn: (data: addLabInputs) => {
       const fd = new FormData();
       fd.append("name", data.name);
-      fd.append("description", data.description);
-      for (let i = 0; i < files.length; i++) {
-        fd.append(`files${i + 1}`, files[i]);
+      fd.append("description", description);
+      if (files) {
+        for (let i = 0; i < files.length; i++) {
+          fd.append(`files${i + 1}`, files[i]);
+        }
       }
 
       return instance.post("lab", fd, {
@@ -121,7 +125,7 @@ const AddNewLabDialog = (props: DialogProps) => {
               helperText={errors["name"] ? errors["name"].message : ""}
               {...register("name")}
             />
-            <TextField
+            {/* <TextField
               type="text"
               margin="normal"
               fullWidth
@@ -134,7 +138,28 @@ const AddNewLabDialog = (props: DialogProps) => {
                 errors["description"] ? errors["description"].message : ""
               }
               {...register("description")}
-            />
+            /> */}
+            <div style={{ direction: "ltr" }}>
+              <ReactQuill
+                theme="snow"
+                value={description}
+                onChange={setDescription}
+                modules={{
+                  toolbar: [
+                    [{ header: [1, 2, false] }],
+                    ["bold", "italic", "underline", "strike", "blockquote"],
+                    [
+                      { list: "ordered" },
+                      { list: "bullet" },
+                      { indent: "-1" },
+                      { indent: "+1" },
+                    ],
+                    ["link", "image"],
+                    ["clean"],
+                  ],
+                }}
+              />
+            </div>
 
             <DialogActions sx={{ justifyContent: "center", pt: 3, gap: 1 }}>
               <Button
