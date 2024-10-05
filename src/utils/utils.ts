@@ -36,11 +36,33 @@ export const mapCourseStatus = (status: number) => {
       return "حذف شده";
   }
 };
+export const mapConsultationStatus = (status: number) => {
+  switch (status) {
+    case 1:
+      return "فعال";
+    case 2:
+      return "غیر فعال";
+    case 3:
+      return "حذف شده";
+  }
+};
 export const mapCertificationStatus = (status: number) => {
   switch (status) {
     case 1:
       return "فعال";
     case 2:
+      return "حذف شده";
+  }
+};
+export const mapProductStatus = (status: number) => {
+  switch (status) {
+    case 1:
+      return "در انتظار";
+    case 2:
+      return "فعال";
+    case 3:
+      return "غیرفعال";
+    case 4:
       return "حذف شده";
   }
 };
