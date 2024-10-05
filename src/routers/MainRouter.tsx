@@ -13,6 +13,8 @@ const Courses = lazy(() => import("../pages/courses"));
 const Feedbacks = lazy(() => import("../pages/feedbacks"));
 const Articles = lazy(() => import("../pages/articles"));
 const Certificates = lazy(() => import("../pages/certificates"));
+const Activities = lazy(() => import("../pages/activities"));
+const Consultations = lazy(() => import("../pages/consultations"));
 
 const router = createBrowserRouter([
   {
@@ -89,6 +91,22 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<CircularProgress />}>
             <Certificates />
+          </Suspense>
+        ),
+      },
+      {
+        path: "consultations",
+        element: (
+          <Suspense fallback={<CircularProgress />}>
+            <Consultations />
+          </Suspense>
+        ),
+      },
+      {
+        path: "activities",
+        element: (
+          <Suspense fallback={<CircularProgress />}>
+            <Activities />
           </Suspense>
         ),
       },
