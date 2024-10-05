@@ -18,46 +18,48 @@ import {
 import { DialogProps } from "../../../constants/GlobalTypes";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import CheckIcon from "@mui/icons-material/Check";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import useSnackbar from "../../../hooks/useSnackbar";
 import instance from "../../../utils/axiosInstance";
+import CheckIcon from "@mui/icons-material/Check";
 import { useState } from "react";
 
-const AddCertificateDialog = (props: DialogProps) => {
+const AddNewConsultationDialog = (props: DialogProps) => {
   const { showSnack } = useSnackbar();
 
-  const [files, setFiles] = useState<any>();
-  const addCertificateSchema = z.object({
-    title: z.string().min(1, "نام تاییدیه الزامیست"),
-    description: z.string().min(1, "متن تاییدیه الزامیست"),
+  const [image, setImage] = useState<any>();
+  const [attachment, setAttachment] = useState<any>();
+
+  const addConsultationSchema = z.object({
+    title: z.string().min(1, "نام دوره الزامیست"),
     provider: z.string().min(1, "نام شرکت الزامیست"),
+    description: z.string().min(1, "متن توضیحات دوره الزامیست"),
   });
-  type addCertificateInputs = z.infer<typeof addCertificateSchema>;
+  type addConsultationInputs = z.infer<typeof addConsultationSchema>;
 
   const {
     formState: { errors },
     register,
     handleSubmit,
     reset,
-  } = useForm<addCertificateInputs>({
-    resolver: zodResolver(addCertificateSchema),
+  } = useForm<addConsultationInputs>({
+    resolver: zodResolver(addConsultationSchema),
     mode: "onSubmit",
   });
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: (data: addCertificateInputs) => {
+    mutationFn: (data: addConsultationInputs) => {
       const fd = new FormData();
       fd.append("title", data.title);
-      fd.append("description", data.description);
       fd.append("provider", data.provider);
-      for (let i = 0; i < files.length; i++) {
-        fd.append(`files${i + 1}`, files[i]);
-      }
-      return instance.post("certificate", fd, {
+      fd.append("description", data.description);
+      if (image) fd.append("image", image);
+      if (attachment) fd.append("attachment", attachment);
+
+      return instance.post("consultation", fd, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -66,9 +68,9 @@ const AddCertificateDialog = (props: DialogProps) => {
     onSuccess() {
       showSnack({
         type: "success",
-        message: "تاییدیه با موفقیت ثبت شد",
+        message: "مشاوره با موفقیت ثبت شد",
       });
-      queryClient.invalidateQueries({ queryKey: ["certificates"] });
+      queryClient.invalidateQueries({ queryKey: ["consultations"] });
       props.handleClose();
       reset();
     },
@@ -80,7 +82,7 @@ const AddCertificateDialog = (props: DialogProps) => {
     },
   });
 
-  const onSubmitHandler = (values: addCertificateInputs) => {
+  const onSubmitHandler = (values: addConsultationInputs) => {
     mutation.mutate(values);
   };
 
@@ -98,49 +100,36 @@ const AddCertificateDialog = (props: DialogProps) => {
         maxWidth={"sm"}
       >
         <DialogTitle sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography sx={{ fontWeight: 700 }}>افزودن تاییدیه</Typography>
+          <Typography sx={{ fontWeight: 700 }}>افزودن خدمت مشاوره</Typography>
           <Box onClick={closeDialogHandler} sx={{ cursor: "pointer" }}>
             <ClearIcon />
           </Box>
         </DialogTitle>
         <DialogContent aria-label="dialog-description">
-          <Typography>عکس تاییدیه</Typography>
-          <input
-            multiple
-            type="file"
-            onChange={(e) => {
-              setFiles(e.target.files);
-            }}
-          />
           <Box
             component="form"
             onSubmit={handleSubmit(onSubmitHandler)}
             noValidate
           >
+            <Typography>عکس مشاوره</Typography>
+            <input
+              type="file"
+              onChange={(e) => {
+                setImage(e.target.files?.[0]);
+              }}
+            />
+
             <TextField
               type="text"
               margin="normal"
               fullWidth
-              id="certificate-name"
-              label={"نام تاییدیه"}
+              id="consultation-title"
+              label={"نام خدمت مشاوره"}
               error={!!errors["title"]}
               helperText={errors["title"] ? errors["title"].message : ""}
               {...register("title")}
             />
-            <TextField
-              type="text"
-              margin="normal"
-              fullWidth
-              multiline
-              minRows={2}
-              id="certificate-description"
-              label={"متن تاییدیه"}
-              error={!!errors["description"]}
-              helperText={
-                errors["description"] ? errors["description"].message : ""
-              }
-              {...register("description")}
-            />
+
             <FormControl fullWidth sx={{ mt: 2 }}>
               <InputLabel>شرکت</InputLabel>
               <Select
@@ -152,6 +141,27 @@ const AddCertificateDialog = (props: DialogProps) => {
                 <MenuItem value={"datis"}>داتیس</MenuItem>
               </Select>
             </FormControl>
+            <TextField
+              type="text"
+              margin="normal"
+              fullWidth
+              id="user-address"
+              multiline
+              minRows={2}
+              label={"توضیحات"}
+              error={!!errors["description"]}
+              helperText={
+                errors["description"] ? errors["description"].message : ""
+              }
+              {...register("description")}
+            />
+            <Typography>پیوست مشاوره</Typography>
+            <input
+              type="file"
+              onChange={(e) => {
+                setAttachment(e.target.files?.[0]);
+              }}
+            />
 
             <DialogActions sx={{ justifyContent: "center", pt: 3, gap: 1 }}>
               <Button
@@ -186,4 +196,4 @@ const AddCertificateDialog = (props: DialogProps) => {
   );
 };
 
-export default AddCertificateDialog;
+export default AddNewConsultationDialog;

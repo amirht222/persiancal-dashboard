@@ -29,7 +29,7 @@ import { useState } from "react";
 const AddArticleDialog = (props: DialogProps) => {
   const { showSnack } = useSnackbar();
 
-  const [files, setFiles] = useState<any>();
+  const [attachment, setAttachment] = useState<any>();
   const addArticleSchema = z.object({
     title: z.string().min(1, "نام مقاله الزامیست"),
     text: z.string().min(1, "متن مقاله الزامیست"),
@@ -54,11 +54,7 @@ const AddArticleDialog = (props: DialogProps) => {
       fd.append("title", data.title);
       fd.append("text", data.text);
       fd.append("provider", data.provider);
-      if (files) {
-        for (let i = 0; i < files.length; i++) {
-          fd.append(`files${i + 1}`, files[i]);
-        }
-      }
+      if (attachment) fd.append(`attachment`, attachment);
       return instance.post("article", fd, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -108,10 +104,9 @@ const AddArticleDialog = (props: DialogProps) => {
         <DialogContent aria-label="dialog-description">
           <Typography>پیوست مقاله</Typography>
           <input
-            multiple
             type="file"
             onChange={(e) => {
-              setFiles(e.target.files);
+              setAttachment(e.target.files?.[0]);
             }}
           />
           <Box

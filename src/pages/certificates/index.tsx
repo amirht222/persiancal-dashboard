@@ -104,7 +104,7 @@ const CertificatesPage = () => {
         borderRadius={"20px"}
       >
         <Box display={"flex"} alignItems={"center"}>
-          <Button
+          {/* <Button
             variant="contained"
             size="large"
             type="button"
@@ -114,7 +114,7 @@ const CertificatesPage = () => {
             }}
           >
             <FilterListIcon fontSize="medium" />
-          </Button>
+          </Button> */}
           {/* <IChips filters={filters} onDeleteChip={handleDeleteChip} /> */}
         </Box>
         <Button

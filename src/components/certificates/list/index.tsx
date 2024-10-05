@@ -20,7 +20,6 @@ const CertificationsList = (props: Props) => {
         res.description.length > 20
           ? res.description.substring(0, 20) + "..."
           : res.description,
-      certificationStatus: mapCertificationStatus(res.certificateStatus),
     }));
   };
 
@@ -32,7 +31,6 @@ const CertificationsList = (props: Props) => {
           { field: "id", title: "شناسه" },
           { field: "title", title: "عنوان" },
           { field: "description", title: "متن تاییدیه" },
-          { field: "certificationStatus", title: "وضعیت" },
           { field: "provider", title: "شرکت" },
         ]}
         tableData={transformTableData(props.data?.data?.data)}

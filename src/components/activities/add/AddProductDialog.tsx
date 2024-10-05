@@ -26,38 +26,35 @@ import useSnackbar from "../../../hooks/useSnackbar";
 import instance from "../../../utils/axiosInstance";
 import { useState } from "react";
 
-const AddCertificateDialog = (props: DialogProps) => {
+const AddActivityDialog = (props: DialogProps) => {
   const { showSnack } = useSnackbar();
 
-  const [files, setFiles] = useState<any>();
-  const addCertificateSchema = z.object({
-    title: z.string().min(1, "نام تاییدیه الزامیست"),
-    description: z.string().min(1, "متن تاییدیه الزامیست"),
+  const [image, setImage] = useState<any>();
+  const addActivitySchema = z.object({
+    text: z.string().min(1, "متن فعالیت الزامیست"),
     provider: z.string().min(1, "نام شرکت الزامیست"),
   });
-  type addCertificateInputs = z.infer<typeof addCertificateSchema>;
+  type addActivityInputs = z.infer<typeof addActivitySchema>;
 
   const {
     formState: { errors },
     register,
     handleSubmit,
     reset,
-  } = useForm<addCertificateInputs>({
-    resolver: zodResolver(addCertificateSchema),
+  } = useForm<addActivityInputs>({
+    resolver: zodResolver(addActivitySchema),
     mode: "onSubmit",
   });
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: (data: addCertificateInputs) => {
+    mutationFn: (data: addActivityInputs) => {
       const fd = new FormData();
-      fd.append("title", data.title);
-      fd.append("description", data.description);
+      fd.append("text", data.text);
       fd.append("provider", data.provider);
-      for (let i = 0; i < files.length; i++) {
-        fd.append(`files${i + 1}`, files[i]);
-      }
-      return instance.post("certificate", fd, {
+      if (image) fd.append(`image`, image);
+
+      return instance.post("activity", fd, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -66,9 +63,9 @@ const AddCertificateDialog = (props: DialogProps) => {
     onSuccess() {
       showSnack({
         type: "success",
-        message: "تاییدیه با موفقیت ثبت شد",
+        message: "فعالیت با موفقیت ثبت شد",
       });
-      queryClient.invalidateQueries({ queryKey: ["certificates"] });
+      queryClient.invalidateQueries({ queryKey: ["activities"] });
       props.handleClose();
       reset();
     },
@@ -80,7 +77,7 @@ const AddCertificateDialog = (props: DialogProps) => {
     },
   });
 
-  const onSubmitHandler = (values: addCertificateInputs) => {
+  const onSubmitHandler = (values: addActivityInputs) => {
     mutation.mutate(values);
   };
 
@@ -98,18 +95,17 @@ const AddCertificateDialog = (props: DialogProps) => {
         maxWidth={"sm"}
       >
         <DialogTitle sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography sx={{ fontWeight: 700 }}>افزودن تاییدیه</Typography>
+          <Typography sx={{ fontWeight: 700 }}>افزودن فعالیت</Typography>
           <Box onClick={closeDialogHandler} sx={{ cursor: "pointer" }}>
             <ClearIcon />
           </Box>
         </DialogTitle>
         <DialogContent aria-label="dialog-description">
-          <Typography>عکس تاییدیه</Typography>
+          <Typography>عکس فعالیت</Typography>
           <input
-            multiple
             type="file"
             onChange={(e) => {
-              setFiles(e.target.files);
+              setImage(e.target.files?.[0]);
             }}
           />
           <Box
@@ -121,26 +117,13 @@ const AddCertificateDialog = (props: DialogProps) => {
               type="text"
               margin="normal"
               fullWidth
-              id="certificate-name"
-              label={"نام تاییدیه"}
-              error={!!errors["title"]}
-              helperText={errors["title"] ? errors["title"].message : ""}
-              {...register("title")}
+              id="activity-text"
+              label={"متن فعالیت"}
+              error={!!errors["text"]}
+              helperText={errors["text"] ? errors["text"].message : ""}
+              {...register("text")}
             />
-            <TextField
-              type="text"
-              margin="normal"
-              fullWidth
-              multiline
-              minRows={2}
-              id="certificate-description"
-              label={"متن تاییدیه"}
-              error={!!errors["description"]}
-              helperText={
-                errors["description"] ? errors["description"].message : ""
-              }
-              {...register("description")}
-            />
+
             <FormControl fullWidth sx={{ mt: 2 }}>
               <InputLabel>شرکت</InputLabel>
               <Select
@@ -186,4 +169,4 @@ const AddCertificateDialog = (props: DialogProps) => {
   );
 };
 
-export default AddCertificateDialog;
+export default AddActivityDialog;

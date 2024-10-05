@@ -1,30 +1,16 @@
 import AddIcon from "@mui/icons-material/Add";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import { Box, Button, Stack, useTheme } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import AddNewConsultationDialog from "../../components/consultations/add";
+import ConsultationsList from "../../components/consultations/list";
 import IPaginate from "../../components/UI/pagination";
 import useConfirm from "../../hooks/useConfirm";
 import useSnackbar from "../../hooks/useSnackbar";
 import instance from "../../utils/axiosInstance";
 import { objectCleaner } from "../../utils/utils";
-import ArticlesList from "../../components/articles/list";
-import AddArticleDialog from "../../components/articles/add/AddArticleDialog";
-import FilterArticlesDialog from "../../components/articles/filter";
 
-// type CoursesFilters = {
-//   username: string;
-//   name: string;
-//   email: string;
-//   password: string;
-//   role: number;
-//   userStatus: number;
-//   address: string;
-//   currentPage: number;
-//   itemPerPage: number;
-// };
-
-const ArticlesPage = () => {
+const ConsultationsPage = () => {
   const theme = useTheme();
   const { openConfirm, closeConfirm } = useConfirm();
   const { showSnack } = useSnackbar();
@@ -32,6 +18,7 @@ const ArticlesPage = () => {
 
   const [filters, setFilters] = useState({
     title: null,
+    consultationStatus: null,
     provider: null,
     currentPage: 1,
     itemPerPage: 3,
@@ -39,20 +26,20 @@ const ArticlesPage = () => {
 
   const { mutate: deleteMutate } = useMutation({
     mutationFn: (id: string) => {
-      return instance.delete(`article/${id}`);
+      return instance.delete(`consultation/${id}`);
     },
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ["articles"] });
+      queryClient.invalidateQueries({ queryKey: ["consultations"] });
       showSnack({
         type: "success",
-        message: "مقاله با موفقیت حذف شد",
+        message: "مشاوره با موفقیت حذف شد",
       });
     },
     onError(error) {
       showSnack({
         type: "error",
         message:
-          error.message || "حذف مقاله با خطا مواجه شد. لطفا مجددا تلاش کنید",
+          error.message || "حذف مشاوره با خطا مواجه شد. لطفا مجددا تلاش کنید",
       });
     },
   });
@@ -60,24 +47,25 @@ const ArticlesPage = () => {
   const {
     isPending,
     isError,
-    data: articlesData,
+    data: consultationsData,
   } = useQuery({
-    queryKey: ["articles", filters],
+    queryKey: ["consultations", filters],
     queryFn: () => {
-      return instance.get("article/getList", {
+      return instance.get("consultation/getList", {
         params: objectCleaner({ ...filters }),
       });
     },
   });
 
-  const [isAddArticleDialogOpen, setIsAddArticleDialogOpen] = useState(false);
-  const [isFilterArticleDialogOpen, setIsFilterArticleDialogOpen] =
+  const [isAddConsultationDialogOpen, setIsAddConsultationDialogOpen] =
     useState(false);
+  //   const [isFilterCourseDialogOpen, setIsFilterCourseDialogOpen] =
+  //     useState(false);
 
-  const deleteArticleHandler = (id: string) => {
+  const deleteConsultationHandler = (id: string) => {
     openConfirm({
-      title: "حذف مقاله",
-      description: "آیا از حذف مقاله اطمینان دارید؟",
+      title: "حذف مشاوره",
+      description: "آیا از حذف مشاوره اطمینان دارید؟",
       isOpen: true,
       cancelBtnLabel: "لغو",
       confirmBtnLabel: "حذف",
@@ -104,17 +92,17 @@ const ArticlesPage = () => {
         borderRadius={"20px"}
       >
         <Box display={"flex"} alignItems={"center"}>
-          <Button
+          {/* <Button
             variant="contained"
             size="large"
             type="button"
             sx={{ minWidth: "auto", color: "white" }}
             onClick={() => {
-              setIsFilterArticleDialogOpen(true);
+              //   setIsFilterCourseDialogOpen(true);
             }}
           >
             <FilterListIcon fontSize="medium" />
-          </Button>
+          </Button> */}
           {/* <IChips filters={filters} onDeleteChip={handleDeleteChip} /> */}
         </Box>
         <Button
@@ -123,7 +111,7 @@ const ArticlesPage = () => {
           color="success"
           startIcon={<AddIcon />}
           size="large"
-          onClick={() => setIsAddArticleDialogOpen(true)}
+          onClick={() => setIsAddConsultationDialogOpen(true)}
           sx={{
             "&:hover": {
               transform: "scale(1.1)",
@@ -131,18 +119,18 @@ const ArticlesPage = () => {
             transition: "transform 0.2s",
           }}
         >
-          افزودن مقاله
+          افزودن مشاوره جدید
         </Button>
       </Box>
 
-      <ArticlesList
-        data={articlesData}
+      <ConsultationsList
+        data={consultationsData}
         isError={isError}
         isLoading={isPending}
-        onDeleteArticle={deleteArticleHandler}
+        onDeleteConsultation={deleteConsultationHandler}
       />
 
-      {articlesData && articlesData.data?.data?.length > 0 && (
+      {consultationsData && consultationsData.data?.data?.length > 0 && (
         <Stack
           spacing={2}
           justifyContent={"center"}
@@ -150,7 +138,9 @@ const ArticlesPage = () => {
           mt={3}
         >
           <IPaginate
-            count={Math.ceil(articlesData.data.count / filters.itemPerPage)}
+            count={Math.ceil(
+              consultationsData.data.count / filters.itemPerPage
+            )}
             onChange={(_event, page: number) =>
               setFilters((prev: any) => ({ ...prev, currentPage: page }))
             }
@@ -158,21 +148,21 @@ const ArticlesPage = () => {
           />
         </Stack>
       )}
-      {isAddArticleDialogOpen && (
-        <AddArticleDialog
-          open={isAddArticleDialogOpen}
-          handleClose={() => setIsAddArticleDialogOpen(false)}
+      {isAddConsultationDialogOpen && (
+        <AddNewConsultationDialog
+          open={isAddConsultationDialogOpen}
+          handleClose={() => setIsAddConsultationDialogOpen(false)}
         />
       )}
-      <FilterArticlesDialog
-        open={isFilterArticleDialogOpen}
-        handleClose={() => setIsFilterArticleDialogOpen(false)}
+      {/* <FilterCoursesDialog
+        open={isFilterCourseDialogOpen}
+        handleClose={() => setIsFilterCourseDialogOpen(false)}
         filterHandler={(values: any) =>
           setFilters((prevFilters) => ({ ...prevFilters, ...values }))
         }
-      />
+      /> */}
     </>
   );
 };
 
-export default ArticlesPage;
+export default ConsultationsPage;

@@ -13,6 +13,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useConfirm from "../../../../hooks/useConfirm";
 import useSnackbar from "../../../../hooks/useSnackbar";
 import instance from "../../../../utils/axiosInstance";
+import { mapProductStatus, providerMapper } from "../../../../utils/utils";
+import { useState } from "react";
+import EditProductDialog from "../../edit";
 const base_url = import.meta.env.VITE_BASE_URL;
 
 type ProductItemProps = {
@@ -24,10 +27,10 @@ type ProductItemProps = {
 };
 
 const ProductItem = (props: ProductItemProps) => {
-
   const { openConfirm, closeConfirm } = useConfirm();
   const { showSnack } = useSnackbar();
   const queryClient = useQueryClient();
+  const [isEditProductDialogOpen, setIsEditProductDialogOpen] = useState(false);
 
   const { mutate: deleteMutate } = useMutation({
     mutationFn: () => {
@@ -96,14 +99,18 @@ const ProductItem = (props: ProductItemProps) => {
             {props.title}
           </Typography>
           <Typography textAlign={"center"} component="p" fontSize={14}>
-            قیمت: تماس بگیرید
+            شرکت: {providerMapper(props.provider)}
           </Typography>
           <Typography textAlign={"center"} component="p" fontSize={14}>
-            وضعیت: {props.productStatus}
+            وضعیت: {mapProductStatus(props.productStatus)}
           </Typography>
           <Stack direction="row" justifyContent={"end"}>
             <Tooltip title="تغییر" arrow={true} placement="bottom">
-              <IconButton onClick={() => {}}>
+              <IconButton
+                onClick={() => {
+                  setIsEditProductDialogOpen(true);
+                }}
+              >
                 <EditIcon fontSize="small" />
               </IconButton>
             </Tooltip>
@@ -115,17 +122,13 @@ const ProductItem = (props: ProductItemProps) => {
           </Stack>
         </Stack>
       </Box>
-      {/* {isEditProductDialogOpen && (
+      {isEditProductDialogOpen && (
         <EditProductDialog
-          data={{
-            title: props.title,
-            price: props.price,
-            id: props.id,
-          }}
+          data={{...props}}
           open={isEditProductDialogOpen}
           handleClose={() => setIsEditProductDialogOpen(false)}
         />
-      )} */}
+      )}
     </>
   );
 };

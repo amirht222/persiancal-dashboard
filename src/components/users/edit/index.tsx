@@ -18,6 +18,7 @@ import {
   Typography,
 } from "@mui/material";
 import { DialogProps } from "../../../constants/GlobalTypes";
+import CryptoJS from "crypto-js";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -27,6 +28,7 @@ import useSnackbar from "../../../hooks/useSnackbar";
 import instance from "../../../utils/axiosInstance";
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useRef } from "react";
 
 interface Props extends DialogProps {
   data: any;
@@ -34,6 +36,7 @@ interface Props extends DialogProps {
 
 const EditUserDialog = (props: Props) => {
   const { showSnack } = useSnackbar();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const editUserSchema = z.object({
     username: z.string().min(1, "نام کاربری الزامیست"),
@@ -91,6 +94,54 @@ const EditUserDialog = (props: Props) => {
     },
   });
 
+  const uploadFileMutation = useMutation({
+    mutationFn: (file: File) => {
+      const formData = new FormData();
+      formData.append("username", props.data.username);
+      formData.append("file", file);
+
+      return instance.post("user/addFile", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    },
+    onSuccess() {
+      showSnack({
+        type: "success",
+        message: "فایل با موفقیت آپلود شد",
+      });
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      props.handleClose();
+    },
+    onError(error) {
+      showSnack({
+        type: "error",
+        message: error.message || "آپلود فایل با خطا مواجه شد",
+      });
+    },
+  });
+
+  const deleteFileMutation = useMutation({
+    mutationFn: (userFileUrl: string) => {
+      return instance.post(`user/deleteFile`, { userFileUrl });
+    },
+    onSuccess() {
+      showSnack({
+        type: "success",
+        message: "فایل با موفقیت حذف شد",
+      });
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      props.handleClose();
+    },
+    onError(error) {
+      showSnack({
+        type: "error",
+        message: error.message || "حذف فایل با خطا مواجه شد",
+      });
+    },
+  });
+
   const onSubmitHandler = (values: editUserInputs) => {
     mutation.mutate(values);
   };
@@ -98,6 +149,20 @@ const EditUserDialog = (props: Props) => {
   const closeDialogHandler = async () => {
     props.handleClose();
     reset();
+  };
+  const handleAddFileClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      uploadFileMutation.mutate(file); // Call the mutation to upload the image
+    }
   };
 
   return (
@@ -128,13 +193,26 @@ const EditUserDialog = (props: Props) => {
               }}
             >
               <Typography>فایل های مربوط به کاربر</Typography>
-              <Button>افزودن فایل</Button>
+              <Button onClick={handleAddFileClick}>افزودن فایل</Button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: "none" }} // Hide the file input
+                onChange={handleFileInputChange} // Handle file selection
+              />
             </Box>
             <List>
               {props.data.userFiles.map((file) => (
                 <ListItem
                   secondaryAction={
-                    <IconButton color="error" edge="end" aria-label="delete">
+                    <IconButton
+                      onClick={() =>
+                        deleteFileMutation.mutate(file.userFileUrl)
+                      }
+                      color="error"
+                      edge="end"
+                      aria-label="delete"
+                    >
                       <DeleteIcon />
                     </IconButton>
                   }

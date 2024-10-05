@@ -24,9 +24,13 @@ import { z } from "zod";
 import useSnackbar from "../../../hooks/useSnackbar";
 import instance from "../../../utils/axiosInstance";
 import CheckIcon from "@mui/icons-material/Check";
+import { useState } from "react";
 
 const AddNewCourseDialog = (props: DialogProps) => {
   const { showSnack } = useSnackbar();
+
+  const [image, setImage] = useState<any>();
+  const [attachment, setAttachment] = useState<any>();
 
   const addCourseSchema = z.object({
     title: z.string().min(1, "نام دوره الزامیست"),
@@ -49,8 +53,18 @@ const AddNewCourseDialog = (props: DialogProps) => {
 
   const mutation = useMutation({
     mutationFn: (data: addCourseInputs) => {
-      return instance.post("course", {
-        ...data,
+      const fd = new FormData();
+      fd.append("title", data.title);
+      fd.append("provider", data.provider);
+      fd.append("duration", data.duration);
+      fd.append("description", data.description);
+      if (image) fd.append("image", image);
+      if (attachment) fd.append("attachment", attachment);
+
+      return instance.post("course", fd, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
     },
     onSuccess() {
@@ -99,6 +113,14 @@ const AddNewCourseDialog = (props: DialogProps) => {
             onSubmit={handleSubmit(onSubmitHandler)}
             noValidate
           >
+            <Typography>عکس دوره</Typography>
+            <input
+              type="file"
+              onChange={(e) => {
+                setImage(e.target.files?.[0]);
+              }}
+            />
+
             <TextField
               type="text"
               margin="normal"
@@ -143,6 +165,13 @@ const AddNewCourseDialog = (props: DialogProps) => {
                 errors["description"] ? errors["description"].message : ""
               }
               {...register("description")}
+            />
+            <Typography>پیوست دوره</Typography>
+            <input
+              type="file"
+              onChange={(e) => {
+                setAttachment(e.target.files?.[0]);
+              }}
             />
 
             <DialogActions sx={{ justifyContent: "center", pt: 3, gap: 1 }}>
