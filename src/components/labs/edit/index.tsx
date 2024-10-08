@@ -22,8 +22,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import useSnackbar from "../../../hooks/useSnackbar";
 import instance from "../../../utils/axiosInstance";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ReactQuill from "react-quill"; // Import Quill
+import "react-quill/dist/quill.snow.css"; // Import Quill styles
 const base_url = import.meta.env.VITE_BASE_URL;
 
 interface Props extends DialogProps {
@@ -32,7 +34,9 @@ interface Props extends DialogProps {
 
 const EditLabDialog = (props: Props) => {
   const { showSnack } = useSnackbar();
-  const fileInputRef = useRef<HTMLInputElement | null>(null); 
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const [description, setDescription] = useState(props.data.description);
 
   const editLabSchema = z.object({
     name: z.string().min(1, "نام الزامیست"),
@@ -57,6 +61,7 @@ const EditLabDialog = (props: Props) => {
     mutationFn: (data: editLabInputs) => {
       return instance.put("lab", {
         id: props.data.id,
+        description,
         ...data,
       });
     },
@@ -104,7 +109,6 @@ const EditLabDialog = (props: Props) => {
       });
     },
   });
-
 
   const deleteImageMutation = useMutation({
     mutationFn: (imageUrl: string) => {
@@ -171,7 +175,7 @@ const EditLabDialog = (props: Props) => {
             onSubmit={handleSubmit(onSubmitHandler)}
             noValidate
           >
-             <Box
+            <Box
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
@@ -237,6 +241,51 @@ const EditLabDialog = (props: Props) => {
               helperText={errors["name"] ? errors["name"].message : ""}
               {...register("name")}
             />
+            <div style={{ direction: "ltr" }}>
+              <ReactQuill
+                theme="snow"
+                value={description}
+                onChange={setDescription}
+                modules={{
+                  toolbar: [
+                    [{ header: [1, 2, false] }],
+                    ["bold", "italic", "underline", "strike", "blockquote"],
+                    [
+                      { list: "ordered" },
+                      { list: "bullet" },
+                      { indent: "-1" },
+                      { indent: "+1" },
+                    ],
+                    ["link", "image"],
+                    ["clean"],
+                    [
+                      { align: "" },
+                      { align: "center" },
+                      { align: "right" },
+                      { align: "justify" },
+                    ],
+                  ],
+                }}
+                formats={[
+                  "header",
+                  "font",
+                  "size",
+                  "color",
+                  "bold",
+                  "italic",
+                  "underline",
+                  "strike",
+                  "blockquote",
+                  "list",
+                  "bullet",
+                  "indent",
+                  "link",
+                  "image",
+                  "video",
+                  "align",
+                ]}
+              />
+            </div>
 
             <DialogActions sx={{ justifyContent: "center", pt: 3, gap: 1 }}>
               <Button
