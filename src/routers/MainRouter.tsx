@@ -15,6 +15,7 @@ const Articles = lazy(() => import("../pages/articles"));
 const Certificates = lazy(() => import("../pages/certificates"));
 const Activities = lazy(() => import("../pages/activities"));
 const Consultations = lazy(() => import("../pages/consultations"));
+const Providers = lazy(() => import("../pages/providers"));
 
 const router = createBrowserRouter([
   {
@@ -107,6 +108,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<CircularProgress />}>
             <Activities />
+          </Suspense>
+        ),
+      },
+      {
+        path: "providers",
+        element: (
+          <Suspense fallback={<CircularProgress />}>
+            <Providers />
           </Suspense>
         ),
       },
