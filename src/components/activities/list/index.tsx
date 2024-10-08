@@ -52,7 +52,7 @@ const ActivitiesList = (props: Props) => {
               id={activity.id}
               text={activity.text}
               imagePath={activity.imagePath || undefined}
-              provider={activity.provider}
+              providerTitle={activity.providerTitle}
             />
           ))}
       </List>

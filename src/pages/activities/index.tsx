@@ -2,7 +2,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { Box, Button, Stack, useTheme } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import AddActivityDialog from "../../components/activities/add/AddProductDialog";
+import AddActivityDialog from "../../components/activities/add/AddActivityDialog";
 import ActivitiesList from "../../components/activities/list";
 import IPaginate from "../../components/UI/pagination";
 import useSnackbar from "../../hooks/useSnackbar";
@@ -15,7 +15,7 @@ const ActivitiesPage = () => {
   const queryClient = useQueryClient();
 
   const [filters, setFilters] = useState({
-    provider: null,
+    providerTitle: null,
     currentPage: 1,
     itemPerPage: 6,
   });

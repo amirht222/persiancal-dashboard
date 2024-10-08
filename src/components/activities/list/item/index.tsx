@@ -17,7 +17,7 @@ type ActivityItemProps = {
   id: string;
   text: string;
   imagePath?: string;
-  provider: string;
+  providerTitle: string;
 };
 
 const ActivityItem = (props: ActivityItemProps) => {
@@ -92,7 +92,7 @@ const ActivityItem = (props: ActivityItemProps) => {
         />
         <ListItemText
           primary={`متن فعالیت: ${props.text}`}
-          secondary={`شرکت: ${providerMapper(props.provider)}`}
+          secondary={`شرکت: ${providerMapper(props.providerTitle)}`}
         />
       </ListItem>
     </>

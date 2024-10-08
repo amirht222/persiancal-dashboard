@@ -32,7 +32,7 @@ const AddActivityDialog = (props: DialogProps) => {
   const [image, setImage] = useState<any>();
   const addActivitySchema = z.object({
     text: z.string().min(1, "متن فعالیت الزامیست"),
-    provider: z.string().min(1, "نام شرکت الزامیست"),
+    providerTitle: z.string().min(1, "نام شرکت الزامیست"),
   });
   type addActivityInputs = z.infer<typeof addActivitySchema>;
 
@@ -51,7 +51,7 @@ const AddActivityDialog = (props: DialogProps) => {
     mutationFn: (data: addActivityInputs) => {
       const fd = new FormData();
       fd.append("text", data.text);
-      fd.append("provider", data.provider);
+      fd.append("providerTitle", data.providerTitle);
       if (image) fd.append(`image`, image);
 
       return instance.post("activity", fd, {
@@ -129,7 +129,7 @@ const AddActivityDialog = (props: DialogProps) => {
               <Select
                 defaultValue={""}
                 label={"شرکت"}
-                {...register("provider")}
+                {...register("providerTitle")}
               >
                 <MenuItem value={"persia"}>پرشیا آزما</MenuItem>
                 <MenuItem value={"datis"}>داتیس</MenuItem>

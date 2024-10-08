@@ -79,8 +79,12 @@ export const mapArticleStatus = (status: number) => {
 export const providerMapper = (provider: string) => {
   switch (provider) {
     case "persia":
+    case "Persia":
+    case "PERSIA":
       return "پرشیا آزما";
     case "datis":
+    case "Datis":
+    case "DATIS":
       return "داتیس";
   }
 };

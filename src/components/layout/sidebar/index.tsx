@@ -14,10 +14,11 @@ import MuiDrawer from "@mui/material/Drawer";
 import ChatIcon from "@mui/icons-material/Chat";
 import FeedIcon from "@mui/icons-material/Feed";
 import VerifiedIcon from "@mui/icons-material/Verified";
-import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
-import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
+import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
+import InfoIcon from '@mui/icons-material/Info';
 
 import MenuItem from "./menu-item";
 
@@ -124,6 +125,12 @@ const Sidebar = (props: { open: boolean; toggleDrawer: () => void }) => {
           path={"/consultations"}
           title={"خدمات مشاوره"}
           icon={<ContactPhoneIcon />}
+          isMenuOpen={props.open}
+        />
+        <MenuItem
+          path={"/providers"}
+          title={"اطلاعات شرکت ها"}
+          icon={<InfoIcon />}
           isMenuOpen={props.open}
         />
       </List>
