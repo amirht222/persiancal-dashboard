@@ -24,6 +24,9 @@ import { z } from "zod";
 import useSnackbar from "../../../hooks/useSnackbar";
 import instance from "../../../utils/axiosInstance";
 import CheckIcon from "@mui/icons-material/Check";
+import ReactQuill from "react-quill"; // Import Quill
+import "react-quill/dist/quill.snow.css";
+import { useState } from "react";
 
 interface Props extends DialogProps {
   data: any;
@@ -35,9 +38,11 @@ const EditCourseDialog = (props: Props) => {
   const editCourseSchema = z.object({
     title: z.string().min(1, "نام دوره الزامیست"),
     provider: z.string().min(1, "شرکت الزامیست"),
-    description: z.string().min(1, "توضیحات الزامیست"),
+    // description: z.string().min(1, "توضیحات الزامیست"),
   });
   type editCourseInputs = z.infer<typeof editCourseSchema>;
+
+  const [description, setDescription] = useState(props.data.description);
 
   const {
     formState: { errors },
@@ -50,7 +55,7 @@ const EditCourseDialog = (props: Props) => {
     defaultValues: {
       title: props.data.title,
       provider: props.data.provider,
-      description: props.data.description,
+      // description: props.data.description,
     },
   });
   const queryClient = useQueryClient();
@@ -58,6 +63,8 @@ const EditCourseDialog = (props: Props) => {
   const mutation = useMutation({
     mutationFn: (data: editCourseInputs) => {
       return instance.put("course", {
+        id: props.data.id,
+        description,
         ...data,
       });
     },
@@ -128,7 +135,7 @@ const EditCourseDialog = (props: Props) => {
                 <MenuItem value={"datis"}>داتیس</MenuItem>
               </Select>
             </FormControl>
-            <TextField
+            {/* <TextField
               type="text"
               margin="normal"
               fullWidth
@@ -141,7 +148,53 @@ const EditCourseDialog = (props: Props) => {
                 errors["description"] ? errors["description"].message : ""
               }
               {...register("description")}
-            />
+            /> */}
+
+            <div style={{ direction: "ltr", marginTop: "20px" }}>
+              <ReactQuill
+                theme="snow"
+                value={description}
+                onChange={setDescription}
+                modules={{
+                  toolbar: [
+                    [{ header: [1, 2, false] }],
+                    ["bold", "italic", "underline", "strike", "blockquote"],
+                    [
+                      { list: "ordered" },
+                      { list: "bullet" },
+                      { indent: "-1" },
+                      { indent: "+1" },
+                    ],
+                    ["link", "image"],
+                    ["clean"],
+                    [
+                      { align: "" },
+                      { align: "center" },
+                      { align: "right" },
+                      { align: "justify" },
+                    ],
+                  ],
+                }}
+                formats={[
+                  "header",
+                  "font",
+                  "size",
+                  "color",
+                  "bold",
+                  "italic",
+                  "underline",
+                  "strike",
+                  "blockquote",
+                  "list",
+                  "bullet",
+                  "indent",
+                  "link",
+                  "image",
+                  "video",
+                  "align",
+                ]}
+              />
+            </div>
 
             <DialogActions sx={{ justifyContent: "center", pt: 3, gap: 1 }}>
               <Button

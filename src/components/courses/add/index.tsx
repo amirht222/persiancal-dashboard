@@ -25,9 +25,13 @@ import useSnackbar from "../../../hooks/useSnackbar";
 import instance from "../../../utils/axiosInstance";
 import CheckIcon from "@mui/icons-material/Check";
 import { useState } from "react";
+import ReactQuill from "react-quill"; // Import Quill
+import "react-quill/dist/quill.snow.css";
 
 const AddNewCourseDialog = (props: DialogProps) => {
   const { showSnack } = useSnackbar();
+
+  const [description, setDescription] = useState("");
 
   const [image, setImage] = useState<any>();
   const [attachment, setAttachment] = useState<any>();
@@ -35,7 +39,7 @@ const AddNewCourseDialog = (props: DialogProps) => {
   const addCourseSchema = z.object({
     title: z.string().min(1, "نام دوره الزامیست"),
     provider: z.string().min(1, "نام شرکت الزامیست"),
-    description: z.string().min(1, "متن توضیحات دوره الزامیست"),
+    // description: z.string().min(1, "متن توضیحات دوره الزامیست"),
     duration: z.string().min(1, "مدت زمان دوره الزامیست"),
   });
   type addCourseInputs = z.infer<typeof addCourseSchema>;
@@ -57,7 +61,7 @@ const AddNewCourseDialog = (props: DialogProps) => {
       fd.append("title", data.title);
       fd.append("provider", data.provider);
       fd.append("duration", data.duration);
-      fd.append("description", data.description);
+      fd.append("description", description);
       if (image) fd.append("image", image);
       if (attachment) fd.append("attachment", attachment);
 
@@ -152,7 +156,7 @@ const AddNewCourseDialog = (props: DialogProps) => {
                 <MenuItem value={"datis"}>داتیس</MenuItem>
               </Select>
             </FormControl>
-            <TextField
+            {/* <TextField
               type="text"
               margin="normal"
               fullWidth
@@ -165,7 +169,52 @@ const AddNewCourseDialog = (props: DialogProps) => {
                 errors["description"] ? errors["description"].message : ""
               }
               {...register("description")}
-            />
+            /> */}
+            <div style={{ direction: "ltr", marginTop: "20px" }}>
+              <ReactQuill
+                theme="snow"
+                value={description}
+                onChange={setDescription}
+                modules={{
+                  toolbar: [
+                    [{ header: [1, 2, false] }],
+                    ["bold", "italic", "underline", "strike", "blockquote"],
+                    [
+                      { list: "ordered" },
+                      { list: "bullet" },
+                      { indent: "-1" },
+                      { indent: "+1" },
+                    ],
+                    ["link", "image"],
+                    ["clean"],
+                    [
+                      { align: "" },
+                      { align: "center" },
+                      { align: "right" },
+                      { align: "justify" },
+                    ],
+                  ],
+                }}
+                formats={[
+                  "header",
+                  "font",
+                  "size",
+                  "color",
+                  "bold",
+                  "italic",
+                  "underline",
+                  "strike",
+                  "blockquote",
+                  "list",
+                  "bullet",
+                  "indent",
+                  "link",
+                  "image",
+                  "video",
+                  "align",
+                ]}
+              />
+            </div>
             <Typography>پیوست دوره</Typography>
             <input
               type="file"
