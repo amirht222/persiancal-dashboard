@@ -156,8 +156,32 @@ const AddNewLabDialog = (props: DialogProps) => {
                     ],
                     ["link", "image"],
                     ["clean"],
+                    [
+                      { align: "" },
+                      { align: "center" },
+                      { align: "right" },
+                      { align: "justify" },
+                    ],
                   ],
                 }}
+                formats={[
+                  "header",
+                  "font",
+                  "size",
+                  "color",
+                  "bold",
+                  "italic",
+                  "underline",
+                  "strike",
+                  "blockquote",
+                  "list",
+                  "bullet",
+                  "indent",
+                  "link",
+                  "image",
+                  "video",
+                  "align",
+                ]}
               />
             </div>
 
