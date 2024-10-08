@@ -102,7 +102,7 @@ const LabsList = (props: Props) => {
         >
           <DialogContent>
             <div
-              dangerouslySetInnerHTML={{ __html: selectedLab?.description }}
+              dangerouslySetInnerHTML={{ __html: (selectedLab as any)?.description }}
             />
           </DialogContent>
         </Dialog>

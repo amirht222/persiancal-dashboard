@@ -12,24 +12,22 @@ import {
   Grid,
   IconButton,
   InputLabel,
-  List,
   MenuItem,
   Select,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import { DialogProps } from "../../../constants/GlobalTypes";
-import CryptoJS from "crypto-js";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import CheckIcon from "@mui/icons-material/Check";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRef } from "react"; // Import useRef to handle file input
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import useSnackbar from "../../../hooks/useSnackbar";
 import instance from "../../../utils/axiosInstance";
-import CheckIcon from "@mui/icons-material/Check";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useRef } from "react"; // Import useRef to handle file input
 const base_url = import.meta.env.VITE_BASE_URL;
 
 interface Props extends DialogProps {

@@ -1,5 +1,5 @@
 import DeleteIcon from "@mui/icons-material/Delete";
-import { mapCertificationStatus, providerMapper } from "../../../utils/utils";
+import { providerMapper } from "../../../utils/utils";
 import ITable from "../../UI/table";
 
 interface Props {

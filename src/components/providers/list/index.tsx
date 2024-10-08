@@ -100,7 +100,7 @@ const ProvidersList = (props: Props) => {
             {/* <div
               dangerouslySetInnerHTML={{ __html: selectedLab?.description }}
             /> */}
-            <Typography>{selectedProvider?.aboutUs}</Typography>
+            <Typography>{(selectedProvider as any)?.aboutUs}</Typography>
           </DialogContent>
         </Dialog>
       )}

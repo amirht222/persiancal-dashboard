@@ -11,24 +11,22 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemButton,
-  ListItemIcon,
   ListItemText,
   TextField,
   Typography,
 } from "@mui/material";
-import { DialogProps } from "../../../constants/GlobalTypes";
 import CryptoJS from "crypto-js";
+import { DialogProps } from "../../../constants/GlobalTypes";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import CheckIcon from "@mui/icons-material/Check";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import useSnackbar from "../../../hooks/useSnackbar";
 import instance from "../../../utils/axiosInstance";
-import CheckIcon from "@mui/icons-material/Check";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useRef } from "react";
 
 interface Props extends DialogProps {
   data: any;
@@ -202,25 +200,27 @@ const EditUserDialog = (props: Props) => {
               />
             </Box>
             <List>
-              {props.data.userFiles.map((file) => (
-                <ListItem
-                  secondaryAction={
-                    <IconButton
-                      onClick={() =>
-                        deleteFileMutation.mutate(file.userFileUrl)
-                      }
-                      color="error"
-                      edge="end"
-                      aria-label="delete"
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  }
-                  disablePadding
-                >
-                  <ListItemText primary={file.userFileUrl} />
-                </ListItem>
-              ))}
+              {props.data.userFiles.map(
+                (file: { userFileUrl: string; userUsername: string }) => (
+                  <ListItem
+                    secondaryAction={
+                      <IconButton
+                        onClick={() =>
+                          deleteFileMutation.mutate(file.userFileUrl)
+                        }
+                        color="error"
+                        edge="end"
+                        aria-label="delete"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    }
+                    disablePadding
+                  >
+                    <ListItemText primary={file.userFileUrl} />
+                  </ListItem>
+                )
+              )}
             </List>
             <Box
               sx={{

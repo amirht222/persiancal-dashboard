@@ -8,10 +8,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Grid,
-  IconButton,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import { DialogProps } from "../../../constants/GlobalTypes";
 
@@ -22,9 +20,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import useSnackbar from "../../../hooks/useSnackbar";
 import instance from "../../../utils/axiosInstance";
-import { useRef } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
-const base_url = import.meta.env.VITE_BASE_URL;
 
 interface Props extends DialogProps {
   data: any;

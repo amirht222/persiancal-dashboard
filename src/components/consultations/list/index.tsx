@@ -1,8 +1,5 @@
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import { useState } from "react";
 import ITable from "../../UI/table";
-// import EditCourseDialog from "../edit";
 import { mapConsultationStatus } from "../../../utils/utils";
 const base_url = import.meta.env.VITE_BASE_URL;
 
@@ -14,9 +11,6 @@ interface Props {
 }
 
 const ConsultationsList = (props: Props) => {
-  // const [isEditCourseDialogOpen, setIsEditCourseDialogOpen] = useState(false);
-  // const [selectedCourse, setSelectedCourse] = useState<null | object>(null);
-
   const transformTableData = (response: any) => {
     if (!response) return;
     return response.map((res: any) => ({
@@ -39,14 +33,6 @@ const ConsultationsList = (props: Props) => {
     }));
   };
 
-  // const editCourseHandler = (id: string) => {
-  //   const foundCourse = props.data?.data?.data?.find(
-  //     (course: any) => course.id === id
-  //   );
-  //   setSelectedCourse(foundCourse);
-  //   setIsEditCourseDialogOpen(true);
-  // };
-
   return (
     <>
       <ITable
@@ -63,26 +49,12 @@ const ConsultationsList = (props: Props) => {
         isError={props.isError}
         tableLabel="courses"
         actions={[
-          // {
-          //   icon: <EditIcon fontSize="small" />,
-          //   handler: editCourseHandler,
-          // },
           {
             icon: <DeleteIcon fontSize="small" />,
             handler: props.onDeleteConsultation,
           },
         ]}
       />
-      {/* {isEditCourseDialogOpen && (
-        <EditCourseDialog
-          data={selectedCourse}
-          open={isEditCourseDialogOpen}
-          handleClose={() => {
-            setIsEditCourseDialogOpen(false);
-            setSelectedCourse(null);
-          }}
-        />
-      )} */}
     </>
   );
 };

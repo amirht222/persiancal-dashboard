@@ -1,15 +1,14 @@
 import AddIcon from "@mui/icons-material/Add";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import { Box, Button, Stack, useTheme } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import AddCertificateDialog from "../../components/certificates/add/AddCertificateDialog";
+import CertificationsList from "../../components/certificates/list";
 import IPaginate from "../../components/UI/pagination";
 import useConfirm from "../../hooks/useConfirm";
 import useSnackbar from "../../hooks/useSnackbar";
 import instance from "../../utils/axiosInstance";
 import { objectCleaner } from "../../utils/utils";
-import AddCertificateDialog from "../../components/certificates/add/AddCertificateDialog";
-import CertificationsList from "../../components/certificates/list";
 
 // type CoursesFilters = {
 //   username: string;
@@ -70,8 +69,6 @@ const CertificatesPage = () => {
   });
 
   const [isAddCertificateDialogOpen, setIsAddCertificateDialogOpen] =
-    useState(false);
-  const [isFilterCertificateDialogOpen, setIsFilterCertificateDialogOpen] =
     useState(false);
 
   const deleteCertificateHandler = (id: string) => {
