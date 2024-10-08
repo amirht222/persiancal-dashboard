@@ -231,7 +231,7 @@ const EditProductDialog = (props: Props) => {
                         ? `${base_url}/${image.imageUrl}`
                         : undefined
                     }
-                    alt="activity image"
+                    alt="product image"
                   />
                 </Grid>
               ))}
