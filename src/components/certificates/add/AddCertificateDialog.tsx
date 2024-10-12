@@ -104,7 +104,7 @@ const AddCertificateDialog = (props: DialogProps) => {
           </Box>
         </DialogTitle>
         <DialogContent aria-label="dialog-description">
-          <Typography>عکس تاییدیه</Typography>
+          <Typography>فایل تاییدیه</Typography>
           <input
             multiple
             type="file"
