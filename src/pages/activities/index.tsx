@@ -14,7 +14,7 @@ const ActivitiesPage = () => {
   const [filters, setFilters] = useState({
     providerTitle: null,
     currentPage: 1,
-    itemPerPage: 6,
+    itemPerPage: 3,
   });
 
   const {
