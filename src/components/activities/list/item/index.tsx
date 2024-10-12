@@ -1,9 +1,4 @@
-import {
-  IconButton,
-  ListItem,
-  ListItemText,
-  useTheme
-} from "@mui/material";
+import { IconButton, ListItem, ListItemText, useTheme } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -80,16 +75,18 @@ const ActivityItem = (props: ActivityItemProps) => {
           </IconButton>
         }
       >
-        <img
-          style={{
-            width: 50,
-            height: 50,
-            objectFit: "cover",
-            marginLeft: "10px",
-          }}
-          src={props.imagePath ? `${base_url}/${props.imagePath}` : undefined}
-          alt="activity image"
-        />
+        {props.imagePath && (
+          <img
+            style={{
+              width: 50,
+              height: 50,
+              objectFit: "cover",
+              marginLeft: "10px",
+            }}
+            src={props.imagePath ? `${base_url}/${props.imagePath}` : undefined}
+            alt="activity image"
+          />
+        )}
         <ListItemText
           primary={`متن فعالیت: ${props.text}`}
           secondary={`شرکت: ${providerMapper(props.providerTitle)}`}
