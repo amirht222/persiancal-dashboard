@@ -9,10 +9,11 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import { DialogProps } from "../../../constants/GlobalTypes";
-
+import ReactQuill from "react-quill"; // Import Quill
+import "react-quill/dist/quill.snow.css"; // Import Quill styles
 import { zodResolver } from "@hookform/resolvers/zod";
 import CheckIcon from "@mui/icons-material/Check";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -20,6 +21,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import useSnackbar from "../../../hooks/useSnackbar";
 import instance from "../../../utils/axiosInstance";
+import { useState } from "react";
 
 interface Props extends DialogProps {
   data: any;
@@ -28,12 +30,14 @@ interface Props extends DialogProps {
 const EditProviderDialog = (props: Props) => {
   const { showSnack } = useSnackbar();
 
+  const [aboutUs, setAboutUs] = useState(props.data.aboutUs);
+
   const editProviderSchema = z.object({
     telephone: z.string().min(1, "شماره الزامیست"),
     fax: z.string(),
     email: z.string().min(1, "ایمیل الزامیست"),
     address: z.string().min(1, "آدرس الزامیست"),
-    aboutUs: z.string().min(1, "درباره ما الزامیست"),
+    // aboutUs: z.string().min(1, "درباره ما الزامیست"),
   });
   type editProviderInputs = z.infer<typeof editProviderSchema>;
 
@@ -50,7 +54,7 @@ const EditProviderDialog = (props: Props) => {
       fax: props.data.fax,
       email: props.data.email,
       address: props.data.address,
-      aboutUs: props.data.aboutUs,
+      // aboutUs: props.data.aboutUs,
     },
   });
   const queryClient = useQueryClient();
@@ -59,6 +63,7 @@ const EditProviderDialog = (props: Props) => {
     mutationFn: (data: editProviderInputs) => {
       return instance.put("provider", {
         providerTitle: props.data.providerTitle,
+        aboutUs: aboutUs,
         ...data,
       });
     },
@@ -152,7 +157,7 @@ const EditProviderDialog = (props: Props) => {
               helperText={errors["address"] ? errors["address"].message : ""}
               {...register("address")}
             />
-            <TextField
+            {/* <TextField
               type="text"
               margin="normal"
               fullWidth
@@ -163,7 +168,50 @@ const EditProviderDialog = (props: Props) => {
               error={!!errors["aboutUs"]}
               helperText={errors["aboutUs"] ? errors["aboutUs"].message : ""}
               {...register("aboutUs")}
-            />
+            /> */}
+              <div style={{ direction: "rtl", marginTop: "20px" }}>
+              <ReactQuill
+                theme="snow"
+                value={aboutUs}
+                onChange={setAboutUs}
+                modules={{
+                  toolbar: [
+                    ["bold", "italic", "underline", "strike", "blockquote"],
+                    [
+                      { list: "ordered" },
+                      { list: "bullet" },
+                      { indent: "-1" },
+                      { indent: "+1" },
+                    ],
+                    ["link", "image"],
+                    ["clean"],
+                    [
+                      { align: "" },
+                      { align: "center" },
+                      { align: "right" },
+                      { align: "justify" },
+                    ],
+                  ],
+                }}
+                formats={[
+                  "font",
+                  "size",
+                  "color",
+                  "bold",
+                  "italic",
+                  "underline",
+                  "strike",
+                  "blockquote",
+                  "list",
+                  "bullet",
+                  "indent",
+                  "link",
+                  "image",
+                  "video",
+                  "align",
+                ]}
+              />
+            </div>
 
             <DialogActions sx={{ justifyContent: "center", pt: 3, gap: 1 }}>
               <Button

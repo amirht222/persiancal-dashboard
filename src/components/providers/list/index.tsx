@@ -97,10 +97,11 @@ const ProvidersList = (props: Props) => {
           }}
         >
           <DialogContent>
-            {/* <div
-              dangerouslySetInnerHTML={{ __html: selectedLab?.description }}
-            /> */}
-            <Typography>{(selectedProvider as any)?.aboutUs}</Typography>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: (selectedProvider as any)?.aboutUs,
+              }}
+            />
           </DialogContent>
         </Dialog>
       )}
