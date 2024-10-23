@@ -241,14 +241,13 @@ const EditLabDialog = (props: Props) => {
               helperText={errors["name"] ? errors["name"].message : ""}
               {...register("name")}
             />
-            <div style={{ direction: "ltr" }}>
+            <div style={{ direction: "rtl" }}>
               <ReactQuill
                 theme="snow"
                 value={description}
                 onChange={setDescription}
                 modules={{
                   toolbar: [
-                    [{ header: [1, 2, false] }],
                     ["bold", "italic", "underline", "strike", "blockquote"],
                     [
                       { list: "ordered" },
@@ -267,7 +266,6 @@ const EditLabDialog = (props: Props) => {
                   ],
                 }}
                 formats={[
-                  "header",
                   "font",
                   "size",
                   "color",

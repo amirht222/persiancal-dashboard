@@ -170,14 +170,13 @@ const AddNewCourseDialog = (props: DialogProps) => {
               }
               {...register("description")}
             /> */}
-            <div style={{ direction: "ltr", marginTop: "20px" }}>
+            <div style={{ direction: "rtl", marginTop: "20px" }}>
               <ReactQuill
                 theme="snow"
                 value={description}
                 onChange={setDescription}
                 modules={{
                   toolbar: [
-                    [{ header: [1, 2, false] }],
                     ["bold", "italic", "underline", "strike", "blockquote"],
                     [
                       { list: "ordered" },
@@ -196,7 +195,6 @@ const AddNewCourseDialog = (props: DialogProps) => {
                   ],
                 }}
                 formats={[
-                  "header",
                   "font",
                   "size",
                   "color",

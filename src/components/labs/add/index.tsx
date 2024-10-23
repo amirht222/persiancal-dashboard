@@ -139,14 +139,13 @@ const AddNewLabDialog = (props: DialogProps) => {
               }
               {...register("description")}
             /> */}
-            <div style={{ direction: "ltr" }}>
+            <div style={{ direction: "rtl" }}>
               <ReactQuill
                 theme="snow"
                 value={description}
                 onChange={setDescription}
                 modules={{
                   toolbar: [
-                    [{ header: [1, 2, false] }],
                     ["bold", "italic", "underline", "strike", "blockquote"],
                     [
                       { list: "ordered" },
@@ -165,7 +164,6 @@ const AddNewLabDialog = (props: DialogProps) => {
                   ],
                 }}
                 formats={[
-                  "header",
                   "font",
                   "size",
                   "color",

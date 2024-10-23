@@ -150,14 +150,13 @@ const EditCourseDialog = (props: Props) => {
               {...register("description")}
             /> */}
 
-            <div style={{ direction: "ltr", marginTop: "20px" }}>
+            <div style={{ direction: "rtl", marginTop: "20px" }}>
               <ReactQuill
                 theme="snow"
                 value={description}
                 onChange={setDescription}
                 modules={{
                   toolbar: [
-                    [{ header: [1, 2, false] }],
                     ["bold", "italic", "underline", "strike", "blockquote"],
                     [
                       { list: "ordered" },
@@ -176,7 +175,6 @@ const EditCourseDialog = (props: Props) => {
                   ],
                 }}
                 formats={[
-                  "header",
                   "font",
                   "size",
                   "color",
